@@ -1,25 +1,13 @@
-<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
-  <div class="container">
-    <a href="../" class="navbar-brand">sHOP mE</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-   
+<smapp-header-component>  
+</smapp-header-component>
 
-    </div>
-  </div>
 
 
 <div class="container">
 
-  <dx-tile-view class="dx-tile-content" [showScrollbar]=true [baseItemWidth]=250 [baseItemHeight]=250 [dataSource]="homes">
-    
-</dx-tile-view>
+  <router-outlet></router-outlet>
 
 </div>
 
-<footer class="footer">
-  <div class="container">
-    <span class="text-muted">&copy; 2018 Cognizant Technology Solutions</span>
-  </div>
-</footer>
+<smapp-footer-component>  
+</smapp-footer-component>
