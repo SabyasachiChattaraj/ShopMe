@@ -1,16 +1,53 @@
-
+<div class="row pb-4">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-11">
+                <dx-autocomplete
+                      placeholder="Type product category..."
+                      [dataSource]="productCategories"
+                      [(value)]="productCategoryUserInput"
+                >
+                </dx-autocomplete>
+            </div>
+            <div class="col-md-1 p-0">
+                <dx-button
+                        icon="fa fa-search"
+                        (onClick)="searchProductBycategory()"
+                        >
+                </dx-button>
+            </div>  
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
   
     
-                <dx-autocomplete
-                    placeholder="Type product name..."
-                   
-                    [dataSource]="homes"
-                    >
-                </dx-autocomplete>
+               
    
         
 
-<dx-tile-view class="dx-tile-content" [showScrollbar]=true [baseItemWidth]=250 [baseItemHeight]=250 [dataSource]="homes">
-    
+<dx-tile-view class="dx-tile-content" 
+              [showScrollbar]=true 
+              [baseItemWidth]=300 
+              [baseItemHeight]=400 
+              
+              direction="vertical"
+              [itemMargin]=20
+              >
+        <dxi-item
+              *ngFor="let product of products">
+              
+              <div class="sm-product-container thumbnail p-4 text-center">
+                <img src="http://placehold.it/300x200" alt="ALT NAME">
+                <div class="captionm pt-3">
+                  <h4>{{product.productName}}</h4>
+                  <p>Price : Rs {{product.productPriceToShow}}</p>
+                  <p>Disc. Price : Rs {{product.productDisc}}</p> 
+                </div>
+              </div>
+          </dxi-item>
 </dx-tile-view>
 

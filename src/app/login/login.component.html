@@ -1,8 +1,72 @@
 <div class="row">
-<div class="col-md-6">
-    Reg Form
+<div class="col-md-6 p-5 sm-register">
+  <h1 class="font-weight-bold text-center pb-4">
+    new user ?
+  </h1>
+  <dx-form  id="form"
+  [(formData)]="user"
+  labelLocation="left"
+  [minColWidth]=300
+  [colCount]=1
+  [showColonAfterLabel]=false
+  >
+
+  
+    <dxi-item dataField="firstName" ></dxi-item>
+    <dxi-item dataField="lastName" ></dxi-item>
+    <dxi-item dataField="emailId"></dxi-item>
+    <dxi-item dataField="mobileNo"></dxi-item>
+    <dxi-item dataField="birthday"  editorType="dxDateBox"></dxi-item>
+    <dxi-item dataField="address" editorType="dxTextArea"></dxi-item>
+    <dxi-item itemtype="button"></dxi-item>
+    <dxi-item 
+      itemType="simple"
+      dataField="Accepted"
+      editorType="dxCheckBox"
+      alignment="right"
+      [editorOptions]="{ 
+          text: 'I agree to the Terms and Conditions',
+          value: false
+      }">
+      <dxo-label
+          [visible]="false">
+      </dxo-label>
+     
+  </dxi-item>
+    
+    <dxi-item 
+        itemType="button"
+        alignment="center"
+        [buttonOptions]="buttonOptions">
+    </dxi-item>
+
+
+</dx-form>
 </div>  
-<div class="col-md-6">
-  Login Form
+<div class="col-md-6 sm-login">
+    <h1 class="font-weight-bold text-center pb-4">
+        sign in 
+      </h1>
+  <dx-form  id="form"
+  [(formData)]="user1"
+  labelLocation="left"
+  [minColWidth]=300
+  [colCount]=1
+  [showColonAfterLabel]=false
+  >
+
+ 
+    <dxi-item dataField="emailId"></dxi-item>
+    <dxi-item dataField="password" [editorOptions]="{ mode: 'password' }"></dxi-item>
+    
+    <a href="">Forgot Password</a>
+    <dxi-item 
+    itemType="button"
+    alignment="right"
+    [buttonOptions]="loginButtonOptions">
+    </dxi-item>
+    
+
+</dx-form>
 </div>
 </div>

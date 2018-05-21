@@ -1,0 +1,10 @@
+
+.sm-product-container img{
+    width: 250px;
+    height: 250px;
+    border-radius: .5rem;
+}
+
+.dx-tile{
+    border-radius: .5rem !important;
+}

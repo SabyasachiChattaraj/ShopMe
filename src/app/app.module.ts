@@ -9,6 +9,7 @@ import { ProductsComponent } from './products/products.component';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { HttpModule } from '@angular/http';
 
 const appRoutes: Routes = [
   { path: 'Products', component: ProductsComponent },
@@ -33,8 +34,8 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,
-    RouterModule.forRoot(appRoutes)
+    DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,DxButtonModule,
+    RouterModule.forRoot(appRoutes), HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
