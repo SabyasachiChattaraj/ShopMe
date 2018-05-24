@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { DxButtonModule, DxScrollViewModule, DxFormModule, DxTileViewModule, DxAutocompleteModule } from 'devextreme-angular';
+import { DxButtonModule, DxScrollViewModule, DxFormModule, DxTileViewModule, DxAutocompleteModule, DxDropDownBoxModule, DxSelectBoxModule, DxNumberBoxModule, DxLoadIndicatorModule, DxLoadPanelModule } from 'devextreme-angular';
 import { AppComponent } from './app.component';
 import { HeaderComponentComponent } from './header-component/header-component.component';
 import { FooterComponentComponent } from './footer-component/footer-component.component';
@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: 'Products', component: ProductsComponent },
@@ -34,8 +35,8 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,DxButtonModule,
-    RouterModule.forRoot(appRoutes), HttpModule
+    DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,DxButtonModule,DxSelectBoxModule,DxNumberBoxModule,DxLoadPanelModule,
+    RouterModule.forRoot(appRoutes), HttpClientJsonpModule,HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

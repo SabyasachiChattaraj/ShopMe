@@ -1,3 +1,4 @@
+import { IProduct } from './iproduct';
 export interface IProduct {
     productId: string;
     productName: string;
@@ -8,4 +9,14 @@ export interface IProduct {
     productImagePath: string;
     quantity: number;
     manufacturedBy: string;
+}
+
+
+export class FetchProductRequest {
+    category: string;
+}
+
+export interface FetchProductResponse {
+    code: number;
+    data: IProduct[];
 }

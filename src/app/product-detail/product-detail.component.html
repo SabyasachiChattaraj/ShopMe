@@ -1,3 +1,65 @@
-<p>
-  product-detail works!
-</p>
+<div class="row sm-product-detail">
+  <div class="col-md-2 sm-product-image-container">
+      <img src="http://placehold.it/300x200" alt="ALT NAME">
+  </div>
+  <div class="col-md-3 sm-product-detail-container">
+      <h3 class="">{{product.productName}}</h3>
+
+      <dx-select-box 
+      [dataSource]="sizeArray"
+      displayExpr="name"
+      valueExpr="ID">
+       </dx-select-box> 
+
+      <dx-select-box 
+      [dataSource]="colorArray"
+      displayExpr="name"
+      valueExpr="ID">
+        
+        </dx-select-box>
+
+
+      <p>Price : Rs {{product.productPriceToShow}}</p>
+      <p>Disc. Price : Rs {{product.productDisc}}</p> 
+
+      <div class="row">  
+          <div class="col-md-6">
+              <dx-button
+                        type="success"
+                        text="Buy Now"
+                        >
+              </dx-button>
+          </div>
+          <div class="col-md-6">
+              <dx-button
+                      type="success"
+                      text="Add to Cart"
+                      >
+            </dx-button>
+          </div>    
+      </div>  
+  </div>
+  <div class="col-md-2 sm-product-count-container">
+      <div class="row">
+        <div class="col-md-4">
+            <dx-button
+                   icon="fa fa-plus"
+             >
+          </dx-button>
+        </div>
+        <div class="col-md-4">
+            <dx-number-box
+                [value]="1"
+                [min]="1"
+                [max]="5"
+            ></dx-number-box>
+        </div>
+        <div class="col-md-4">
+            <dx-button
+                   icon="fa fa-minus"
+             >
+          </dx-button>
+        </div>
+      </div>  
+  </div>
+</div>  

@@ -1,0 +1,12 @@
+.sm-product-detail img{
+    width: 250px;
+    height: 250px;
+    border-radius: .5rem;
+}
+.sm-product-detail{
+    padding: 80px;
+}
+
+.sm-product-detail .sm-product-image-container{
+    max-width:300px;
+}
