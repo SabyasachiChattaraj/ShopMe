@@ -9,7 +9,9 @@ import { HttpClientModule, HttpClient, HttpResponse, HttpErrorResponse } from '@
 @Injectable()
 export class ProductService {
 
-  private _producturl='https://cors-anywhere.herokuapp.com/https://ufvhhtm3s5.execute-api.us-east-2.amazonaws.com/Stage';
+ 
+  private _producturl='https://ufvhhtm3s5.execute-api.us-east-2.amazonaws.com/Stage';
+  private _corsproducturl="https://cors-anywhere.herokuapp.com/"+this._producturl;
   private readonly newProperty = this;
 
   constructor(private _http: HttpClient){}
@@ -26,7 +28,7 @@ export class ProductService {
     
 
 
-    return this._http.post<FetchProductResponse>(this._producturl,JSON.stringify(fetchProductRequest));
+    return this._http.post<FetchProductResponse>(this._corsproducturl,JSON.stringify(fetchProductRequest));
       
       
        
