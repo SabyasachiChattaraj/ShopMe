@@ -4,64 +4,58 @@
     <div class="col-md-8">
         <div class="row">
             <div class="col-md-11">
-                <dx-autocomplete
-                      placeholder="Type product category..."
-                      [dataSource]="productCategories"
-                      [(value)]="productCategoryUserInput"
-                >
+                <dx-autocomplete placeholder="Type product category..." 
+                                 [dataSource]="productCategories" 
+                                 [(value)]="productCategoryUserInput">
                 </dx-autocomplete>
             </div>
             <div class="col-md-1 p-0">
-                <dx-button
-                        icon="fa fa-search"
-                        (onClick)="searchProductBycategory()"
-                        >
+                <dx-button icon="fa fa-search" 
+                           (onClick)="searchProductBycategory()">
                 </dx-button>
-            </div>  
+            </div>
         </div>
     </div>
     <div class="col-md-2">
     </div>
 </div>
 
-<dx-load-panel
-    #loadPanel
-    shadingColor="lightcyan"
-    [position]="{ of: '#smProductsContainer' }"
-    [(visible)]="loadingVisible"
-    [showIndicator]="true"
-    [showPane]="true"
-    [shading]="true"
-    [closeOnOutsideClick]="false"
-    >
+<dx-load-panel #loadPanel 
+               shadingColor="lightcyan" 
+               [position]="{ of: '#smProductsContainer' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
 </dx-load-panel>
-    
-<div id="smProductsContainer" [ngSwitch]="selectedProduct==null">
-  <dx-tile-view class="dx-tile-content" 
-              [showScrollbar]=true 
-              [baseItemWidth]=300 
-              [baseItemHeight]=400 
-              noDataText="No Products Found !!!"
-              direction="vertical"
-              [itemMargin]=20
-              
-              *ngSwitchCase="true">
-        <dxi-item
-              *ngFor="let product of products" (click)="onSelect(product)">
-              
-              <div class="sm-product-container thumbnail p-4 text-center">
-                <img src="{{product.productImagePath}}" alt="{{product.productName}}}">
-                <div class="captionm pt-3">
-                  <h4>{{product.productName}}</h4>
-                  <p>Price : Rs {{product.productPriceToShow}}</p>
-                  <p>Disc. Price : Rs {{product.productDisc}}</p> 
-                </div>
-              </div>
-          </dxi-item>
-         
-</dx-tile-view>
 
-<div *ngSwitchCase="false">
-    <app-product-detail [product]="selectedProduct"></app-product-detail>
-  </div>               
+<div id="smProductsContainer" [ngSwitch]="selectedProduct==null">
+    <dx-tile-view class="dx-tile-content" 
+                  [showScrollbar]=true 
+                  [baseItemWidth]=300 
+                  [baseItemHeight]=400 
+                  noDataText="No Products Found !!!"
+                  direction="vertical" 
+                  [itemMargin]=20 
+                  *ngSwitchCase="true">
+        
+        <dxi-item *ngFor="let product of products" 
+                  (click)="onSelect(product)">
+            <div class="sm-product-container thumbnail p-4 text-center">
+                <img src="http://placehold.it/300x200" alt="{{product.productName}}">
+                <div class="captionm pt-3">
+                    <h4>{{product.productName}}</h4>
+                    <p>Price : Rs {{product.productPriceToShow}}</p>
+                    <p>Disc. Price : Rs {{product.productDisc}}</p>
+                </div>
+            </div>
+        </dxi-item>
+
+    </dx-tile-view>
+
+    <div *ngSwitchCase="false">
+        <app-product-detail [product]="selectedProduct">
+        </app-product-detail>
+    </div>
 </div>

@@ -1,0 +1,39 @@
+<div class="card sm-addproduct-container">
+
+
+
+  <dx-form  labelLocation="left" [minColWidth]=300 [colCount]=1 [showColonAfterLabel]=false>
+
+
+      <dxi-item dataField="productId"></dxi-item>
+      <dxi-item dataField="productName"></dxi-item>
+      <dxi-item dataField="productCategory" editorType="dxSelectBox" [editorOptions]="{ items: ['Shirt','Skirt','Shoes','Watches','Bags'], value: '' }">
+        
+      </dxi-item>
+  
+      <dxi-item dataField="productMrp" editorType="dxNumberBox"></dxi-item>
+      <dxi-item dataField="discount" editorType="dxNumberBox"></dxi-item>
+      <dxi-item dataField="priceToDisplay" editorType="dxNumberBox"></dxi-item>
+      <dxi-item dataField="quantity" editorType="dxNumberBox" [editorOptions]="quantityEditorOptions"></dxi-item>
+  
+  
+      <dxi-item dataField="manufacturedBy" editorType="dxTextBox"></dxi-item>
+  
+      <dxi-item dataField="productImage">
+      <dx-file-uploader
+            selectButtonText="Select photo"
+            labelText=""
+            accept="image/*"
+            uploadMode="useForm">
+        </dx-file-uploader>
+      </dxi-item>  
+
+      <dxi-item 
+      itemType="button"
+      alignment="center"
+      [buttonOptions]="addProductButtonOptions">
+      </dxi-item>
+
+
+  </dx-form>
+</div>
