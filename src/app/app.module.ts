@@ -10,8 +10,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProductAdminComponent } from './product-admin/product-admin.component';
+import { TokenInterceptor } from './jwttoken.interceptor';
 
 const appRoutes: Routes = [
   { path: 'Products', component: ProductsComponent },
@@ -41,7 +42,14 @@ const appRoutes: Routes = [
     DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,DxButtonModule,DxSelectBoxModule,DxNumberBoxModule,DxLoadPanelModule,DxFileUploaderModule,
     RouterModule.forRoot(appRoutes), HttpClientJsonpModule,HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

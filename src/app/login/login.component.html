@@ -1,72 +1,81 @@
 <div class="row">
-<div class="col-md-6 p-5 sm-register">
-  <h1 class="font-weight-bold text-center pb-4">
-    new user ?
-  </h1>
-  <dx-form  id="form"
-  [(formData)]="user"
-  labelLocation="left"
-  [minColWidth]=300
-  [colCount]=1
-  [showColonAfterLabel]=false
-  >
+    <div class="col-md-6 p-5 sm-register">
+        <h1 class="font-weight-bold text-center pb-4">
+            new user ?
+        </h1>
+        <form (submit)="onRegistrationFormSubmit($event)">
+            <dx-form id="form" 
+                        #registrationForm
+                        labelLocation="left" 
+                        [minColWidth]=300 
+                        [colCount]=1 
+                        [showColonAfterLabel]=false>
+                <dxi-item dataField="firstName" label="First Name">
+                    <dxi-validation-rule type="required" message="First Name is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="lastename" label="Last Name">
+                    <dxi-validation-rule type="required" message="Last Name is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="email" label="Email Id">
+                    <dxi-validation-rule type="required" message="Email Id is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="mobilenumber" label="Mobile No">
+                    <dxi-validation-rule type="required" message="Mobile No is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="dob" editorType="dxDateBox" label="Date Of Birth">
+                    <dxi-validation-rule type="required" message="Birthday is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="address" editorType="dxTextArea" label="Address">
+                </dxi-item>
+                <dxi-item dataField="password" [editorOptions]="passwordBoxOptions" label="Password">
+                    <dxi-validation-rule type="required" message="Password is required">
+                    </dxi-validation-rule>        
+                </dxi-item>
+                <!--
+                <dxi-item itemType="simple" 
+                            dataField="Accepted" 
+                            editorType="dxCheckBox" 
+                            alignment="right" 
+                            [editorOptions]="termsCheckboxOptions">
+                    <dxo-label [visible]="false">
+                    </dxo-label>
+                </dxi-item>
+                -->
+                <dxi-item itemType="button" alignment="center" [buttonOptions]="registerButtonOptions">
+                </dxi-item>
+            </dx-form>
+        </form>
+    </div>
 
-  
-    <dxi-item dataField="firstName" ></dxi-item>
-    <dxi-item dataField="lastName" ></dxi-item>
-    <dxi-item dataField="emailId"></dxi-item>
-    <dxi-item dataField="mobileNo"></dxi-item>
-    <dxi-item dataField="birthday"  editorType="dxDateBox"></dxi-item>
-    <dxi-item dataField="address" editorType="dxTextArea"></dxi-item>
-    <dxi-item itemtype="button"></dxi-item>
-    <dxi-item 
-      itemType="simple"
-      dataField="Accepted"
-      editorType="dxCheckBox"
-      alignment="right"
-      [editorOptions]="{ 
-          text: 'I agree to the Terms and Conditions',
-          value: false
-      }">
-      <dxo-label
-          [visible]="false">
-      </dxo-label>
-     
-  </dxi-item>
-    
-    <dxi-item 
-        itemType="button"
-        alignment="center"
-        [buttonOptions]="buttonOptions">
-    </dxi-item>
+    <div class="col-md-6 sm-login">
+        <h1 class="font-weight-bold text-center pb-4">
+            sign in
+        </h1>
+        <form (submit)="onLoginFormSubmit($event)">
+            <dx-form id="form" 
+                    #loginForm 
+                    labelLocation="left" 
+                    [minColWidth]=300 
+                    [colCount]=1 
+                    [showColonAfterLabel]=false>
 
-
-</dx-form>
-</div>  
-<div class="col-md-6 sm-login">
-    <h1 class="font-weight-bold text-center pb-4">
-        sign in 
-      </h1>
-  <dx-form  id="form"
-  
-  labelLocation="left"
-  [minColWidth]=300
-  [colCount]=1
-  [showColonAfterLabel]=false
-  >
-
- 
-    <dxi-item dataField="emailId"></dxi-item>
-    <dxi-item dataField="password" [editorOptions]="{ mode: 'password' }"></dxi-item>
-    
-    <a href="">Forgot Password</a>
-    <dxi-item 
-    itemType="button"
-    alignment="right"
-    [buttonOptions]="loginButtonOptions">
-    </dxi-item>
-    
-
-</dx-form>
-</div>
+                <dxi-item dataField="username">
+                    <dxi-validation-rule type="required" message="Username is required">
+                    </dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
+                    <dxi-validation-rule type="required" message="Password is required">
+                    </dxi-validation-rule>        
+                </dxi-item>
+                <a href="">Forgot Password</a>
+                <dxi-item itemType="button" alignment="right" [buttonOptions]="loginButtonOptions">
+                </dxi-item>
+            </dx-form>
+        </form>
+    </div>
 </div>

@@ -1,49 +1,115 @@
-import { Component, OnInit } from '@angular/core';
-import { DxFormModule} from 'devextreme-angular';
+import { UserLoginRequest, UserRegistrationRequest } from './../common-model';
+import { LoginService } from './../login.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DxFormModule, DxFormComponent, DxNumberBoxComponent } from 'devextreme-angular';
+import { Router } from '@angular/router';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers:[LoginService]
 })
 export class LoginComponent implements OnInit {
-  user : User=null;
-  user1 : User=null;
-  constructor() { }
+  @ViewChild("loginForm") loginForm: DxFormComponent;
+  @ViewChild("registrationForm") registrationForm: DxFormComponent;
 
+  constructor(private _loginService:LoginService,private _router: Router) { }
   ngOnInit() {
-    this.user=new User();
-    this.user.firstName="";
-    this.user.lastName="";
-    this.user.emailId="";
-    this.user.mobileNo="";
-    this.user.birthday="";
-    this.user.address="";
-    this.user1=new User();  
-    this.user1.emailId="";
-    this.user1.password="";
+    localStorage.setItem("token",null);
+    localStorage.setItem("user",null);
   }
-  buttonOptions: any = {
+  
+  registerButtonOptions: any = {
     text: "Register",
-    type: "success",
+    type: "default",
     useSubmitBehavior: true,
     width:200
-}
-loginButtonOptions: any = {
-  text: "Login",
-  type: "success",
-  useSubmitBehavior: true,
-  width:200
-}
-}
-export class User {
-  firstName: string;
-  lastName: string;
-  emailId: string;
-  mobileNo: string;
-  birthday: string;
-  address: string;
-  password : string;
-}
+  };
 
+  loginButtonOptions: any = {
+    text: "Login",
+    type: "default",
+    useSubmitBehavior: true,
+    width:200
+  };
+
+  termsCheckboxOptions:any={ 
+    text: 'I agree to the Terms and Conditions',
+    value: false
+  };
+
+  passwordBoxOptions:any={ mode: 'password' };
+
+  onLoginFormSubmit = function(e) {
+    let userLoginRequest:UserLoginRequest=this.loginForm.instance.option("formData");
+    this._loginService.getJWTToken(userLoginRequest)
+        .subscribe(
+          (response) => {
+            let authorization=response.headers.get("authorization");
+            console.log("response.headers ::::"+response.headers);
+             authorization="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzYWJ5YXNhY2hpY2hhdHRhcmFqMjAwOUBnbWFpbC5jb20iLCJleHAiOjE1Mjc2MzIzNTd9.gjgrXgO2MAIJw-aVctnxB4vd0qLxZ9B9aKBx5kDl5BNNZJMBi5aMi8lyN4XCaqFC-qgEeEXPmEjByl0cGNqs9A";
+    
+            localStorage.setItem("token",authorization);
+            this._loginService.authenticateUser(userLoginRequest)
+                .subscribe(
+                  (userLoginResponse) => {
+                    if(userLoginResponse.status=="success"){
+
+                      this._loginService.fetchUserByEmailID(userLoginRequest.username)
+                          .subscribe(
+                              (user) =>{
+                                localStorage.setItem("user",JSON.stringify(user));
+                                this._router.navigate(['/Products']); 
+                              },
+                              (error) =>{
+                                console.log(error);
+                              },
+                              ()=>{
+                                
+                          }); 
+                    }
+                  },
+                  (error) =>{
+                    console.log(error);
+                  },
+                  ()=>{
+                    
+                  });  
+          },
+          (error) =>{
+            console.log(error);
+          },
+          ()=>{
+            
+          });
+    e.preventDefault();
+  }  
+
+  onRegistrationFormSubmit = function(e) {
+    let userRegistrationRequest:UserRegistrationRequest=this.registrationForm.instance.option("formData");
+    console.log(JSON.stringify(userRegistrationRequest));
+    this._loginService.register(userRegistrationRequest)
+        .subscribe(
+          (response) => {
+            if(response.status=="success"){
+              notify("Successfully Registered. Please Login.", "success", 600);
+              this.registrationForm.instance.resetValues();
+            }else{
+              notify(response.message, "error", 600);
+            }
+          },
+          (error) =>{
+            console.log(error);
+            notify("Registration error", "error", 600);
+          },
+          ()=>{
+            
+          }
+        );
+    e.preventDefault();
+  }  
+
+}
 

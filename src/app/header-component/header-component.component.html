@@ -7,8 +7,14 @@
     <div class="user-account">
         <a class="fa fa-shopping-cart pr-3" href="/Cart">
         </a>
-        <a class="fa fa-user" routerLink="/Login">
-        </a>
+        <span id="smUserSection" [ngSwitch]="reloadUserSection()">
+          <a *ngSwitchCase="true">
+              {{loggedInUserInitials}} 
+          </a>
+          <a class="fa fa-user" routerLink="/Login"  *ngSwitchCase="false">
+          </a>
+        </span>
+        
     </div>
    
     
