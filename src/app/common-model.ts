@@ -47,3 +47,49 @@ export class User {
     mobilenumber: string;
     password: string;
 }
+
+export class AddToCartRequest {
+    userid: string;
+    productid: string;
+    quantity: number;
+    constructor(userid:string,productid:string, quantity: number){
+        this.userid=userid;
+        this.productid=productid;
+        this.quantity=quantity;
+    }
+  }
+
+export class AddToCartResponse {
+    code: string;
+    message: string;
+    data: AddToCartData;
+  }
+  
+ export class AddToCartData {
+    cartid: number;
+    userid: string;
+    productid: string;
+    quantity: number;
+  }  
+
+  export class FetchAllCartByUserRequest {
+    userid: string;
+    constructor(userid: string){
+        this.userid=userid;
+    }
+  }
+
+  export class FetchAllCartByUserResponse {
+    code: string;
+    message: string;
+    data: AddToCartData[];
+  }
+  
+  export class DeleteCartByUserProductRequest {
+    userid: string;
+    productid: string;
+    constructor(userid:string,productid:string){
+        this.userid=userid;
+        this.productid=productid;
+    }
+  }

@@ -28,7 +28,7 @@ export class ProductService {
     
 
 
-    return this._http.post<FetchProductResponse>(this._corsproducturl,JSON.stringify(fetchProductRequest));
+    return this._http.post<FetchProductResponse>(this._producturl,JSON.stringify(fetchProductRequest));
       
       
        

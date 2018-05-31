@@ -5,7 +5,8 @@
     <h2 class="smtitle"> shop me </h2>
 
     <div class="user-account">
-        <a class="fa fa-shopping-cart pr-3" href="/Cart">
+        <a class="fa fa-shopping-cart pr-3" routerLink="/Cart">
+          <span class="badge badge-light"></span>
         </a>
         <span id="smUserSection" [ngSwitch]="reloadUserSection()">
           <a *ngSwitchCase="true">

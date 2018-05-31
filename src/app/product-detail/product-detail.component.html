@@ -4,7 +4,7 @@
         <img src="http://placehold.it/300x200" alt="{{product.productName}}">
     </div>
     <div class="col-md-3 sm-product-detail-container">
-        <h3 class="">{{product.productName}}</h3>
+        <h3>{{product.productName}}</h3>
         <dx-select-box [dataSource]="sizeArray" 
                        displayExpr="name" 
                        valueExpr="ID" 
@@ -32,7 +32,8 @@
             </div>
             <div class="col-md-6">
                 <dx-button type="default" 
-                           text="Add to Cart">
+                           text="Add to Cart"
+                           (click)="addToCart()">
                 </dx-button>
             </div>
         </div>

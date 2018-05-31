@@ -49,8 +49,6 @@ export class LoginComponent implements OnInit {
           (response) => {
             let authorization=response.headers.get("authorization");
             console.log("response.headers ::::"+response.headers);
-             authorization="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzYWJ5YXNhY2hpY2hhdHRhcmFqMjAwOUBnbWFpbC5jb20iLCJleHAiOjE1Mjc2MzIzNTd9.gjgrXgO2MAIJw-aVctnxB4vd0qLxZ9B9aKBx5kDl5BNNZJMBi5aMi8lyN4XCaqFC-qgEeEXPmEjByl0cGNqs9A";
-    
             localStorage.setItem("token",authorization);
             this._loginService.authenticateUser(userLoginRequest)
                 .subscribe(
@@ -69,10 +67,12 @@ export class LoginComponent implements OnInit {
                               ()=>{
                                 
                           }); 
+                    }else{
+                      notify("Login Error : "+response.message, "error", 600);
                     }
                   },
                   (error) =>{
-                    console.log(error);
+                    notify("Login Error : "+error, "error", 600);
                   },
                   ()=>{
                     

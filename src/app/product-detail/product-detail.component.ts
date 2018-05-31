@@ -1,11 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { AddToCartRequest, AddToCartResponse, User } from './../common-model';
+import { CartService } from './../cart.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { IProduct } from '../iproduct';
 import { DxSelectBoxModule,DxNumberBoxModule, DxNumberBoxComponent } from 'devextreme-angular';
+import { Router } from '@angular/router';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.css']
+  styleUrls: ['./product-detail.component.css'],
+  providers:[CartService]
 })
 export class ProductDetailComponent implements OnInit {
   
@@ -24,10 +30,11 @@ export class ProductDetailComponent implements OnInit {
     { "ID": "G", "name": "Green" },
     { "ID": "B", "name": "Blue" },
     { "ID": "Y", "name": "Yellow" }];
+
  
   @Input()
   product:IProduct;
-  constructor() { }
+  constructor(private _cartService:CartService,private _router: Router) { }
 
   ngOnInit() {
   }
@@ -43,6 +50,28 @@ export class ProductDetailComponent implements OnInit {
          this.quantityNumberBox.instance.option("value", currentValue-1);
       }
     }
-   
+  }
+
+  addToCart():void{
+    let quantity:number=this.quantityNumberBox.instance.option("value");
+    let userid:string=(<User>JSON.parse(localStorage.getItem("user"))).userId.toString();
+    let addToCartRequest:AddToCartRequest=new AddToCartRequest(userid,this.product.productId, quantity);
+    
+    this._cartService.addToCart(addToCartRequest)
+        .subscribe(
+            (response:AddToCartResponse) => {
+                if(response.code=="200"){
+                  this._router.navigate(['/Cart']); 
+                }else{
+                  notify("Add To Cart Error : "+response.message, "error", 600);
+                }
+            },
+            (error:HttpErrorResponse)=>{
+              notify("Add To Cart Error : "+error.message, "error", 600);
+            },
+            ()=>{
+              
+            }
+        );  
   }
 }

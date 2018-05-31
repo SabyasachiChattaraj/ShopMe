@@ -1,17 +1,21 @@
+import { CartService } from './../cart.service';
 
-import { User } from './../common-model';
+import { User, FetchAllCartByUserRequest, FetchAllCartByUserResponse } from './../common-model';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Routes, ActivatedRoute,Router } from '@angular/router';
+import notify from 'devextreme/ui/notify';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'smapp-header-component',
   templateUrl: './header-component.component.html',
-  styleUrls: ['./header-component.component.css']
+  styleUrls: ['./header-component.component.css'],
+  providers:[CartService]
 })
 export class HeaderComponentComponent implements OnInit {
 
   loggedInUser:User=null;
   loggedInUserInitials:string=null;
-  constructor() { 
+  constructor(private _cartService:CartService) { 
     
   }
 
@@ -34,5 +38,27 @@ export class HeaderComponentComponent implements OnInit {
       return false;
     }
 
+  }
+
+  getCartCount():number{
+    let userid:string=(<User>JSON.parse(localStorage.getItem("user"))).userId.toString();
+    let fetchAllCartByUserRequest:FetchAllCartByUserRequest=new FetchAllCartByUserRequest(userid);
+    this._cartService.fetchAllCartByUser(fetchAllCartByUserRequest)
+    .subscribe(
+        (response:FetchAllCartByUserResponse) => {
+            if(response.code=="200"){
+              return response.data.length;
+            }else{
+              notify("getCartCount Error : "+response.message, "error", 600);
+            }
+        },
+        (error:HttpErrorResponse)=>{
+          notify("getCartCount : "+error.message, "error", 600);
+        },
+        ()=>{
+          
+        }
+    );  
+    return null;
   }
 }

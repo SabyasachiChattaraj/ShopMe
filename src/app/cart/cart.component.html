@@ -1,0 +1,65 @@
+<div class="row" id="smCartContainer">
+    <div class="col-md-8 smcartcontainerleft">
+        <div class="row">
+          My Cart
+        </div>
+        <div class="row">
+            <dx-list [items]="cartItems"
+            [height]="450"
+            selectionMode="multiple"
+            [showSelectionControls]="true">
+              <div *dxTemplate="let item of 'item'">
+                      <div class="row">
+                          <div class="col-md-8">
+                              
+                            <p>{{item.productid}} </p>
+                            <dx-button type="default" 
+                                        text="Delete"
+                                        align="left"
+                                        (click)="deleteCartByUserProduct(item.productid)"
+                                        >
+                            </dx-button>    
+
+                          </div>
+                          <div class="col-md-4">{{item.quantity}}
+                               
+
+                          </div>
+                      </div>
+                  </div>
+              </dx-list>
+        </div>  
+    </div>
+    <div class="col-md-4 smcartcontainerright">
+       
+        <div class="row text-center"> 
+            <h1 class="text-center font-weight-bold">Sub Total</h1>
+        </div>    
+        <div class="row">
+            <p> 3 Items </p>
+        </div>
+
+
+        <div class="row">  
+            <p> Price 3000 </p>
+        </div>
+    
+            <dx-button type="default" 
+                      text="Proceed"
+                      align="center"
+                      >
+          </dx-button>
+
+          </div>    
+</div>  
+
+
+<dx-load-panel #loadPanel 
+               shadingColor="lightcyan" 
+               [position]="{ of: '#smCartContainer' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>
