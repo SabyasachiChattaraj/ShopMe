@@ -1,14 +1,17 @@
+import { DataStorageService } from './data-storage.service';
 import { Component } from '@angular/core';
 import    { DxFormModule, DxTileViewModule } from 'devextreme-angular';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers:[DataStorageService]
 })
 export class AppComponent {
+  
   homes: Home[];
     
-    constructor() {
+    constructor(private _dataStorageService:DataStorageService) {
      this.homes = [{
         ID: "1",
         Address: "652 Avonwick Gate",

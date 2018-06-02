@@ -43,7 +43,7 @@
         <dxi-item *ngFor="let product of products" 
                   (click)="onSelect(product)">
             <div class="sm-product-container thumbnail p-4 text-center">
-                <img src="http://placehold.it/300x200" alt="{{product.productName}}">
+                <img src="{{product.productImagePath}}" alt="{{product.productName}}">
                 <div class="captionm pt-3">
                     <h4>{{product.productName}}</h4>
                     <p>Price : Rs {{product.productPriceToShow}}</p>

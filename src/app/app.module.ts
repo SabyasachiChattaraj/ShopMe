@@ -1,7 +1,8 @@
+import { DataStorageService } from './data-storage.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { DxButtonModule, DxScrollViewModule, DxFormModule, DxTileViewModule, DxAutocompleteModule, DxDropDownBoxModule, DxSelectBoxModule, DxNumberBoxModule, DxLoadIndicatorModule, DxLoadPanelModule, DxFileUploaderModule, DxListModule } from 'devextreme-angular';
+import { DxButtonModule, DxScrollViewModule, DxFormModule, DxTileViewModule, DxAutocompleteModule, DxDropDownBoxModule, DxSelectBoxModule, DxNumberBoxModule, DxLoadIndicatorModule, DxLoadPanelModule, DxFileUploaderModule, DxListModule, DxDataGridModule } from 'devextreme-angular';
 import { AppComponent } from './app.component';
 import { HeaderComponentComponent } from './header-component/header-component.component';
 import { FooterComponentComponent } from './footer-component/footer-component.component';
@@ -14,12 +15,16 @@ import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@ang
 import { ProductAdminComponent } from './product-admin/product-admin.component';
 import { TokenInterceptor } from './jwttoken.interceptor';
 import { CartComponent } from './cart/cart.component';
+import { GlobalLoaderComponent } from './global-loader/global-loader.component';
+import { SmquantityComponent } from './smquantity/smquantity.component';
+import { OrderComponent } from './order/order.component';
 
 const appRoutes: Routes = [
   { path: 'Products', component: ProductsComponent },
   { path: 'Login', component: LoginComponent },
   { path: 'Admin', component: ProductAdminComponent },
   { path: 'Cart', component: CartComponent },
+  { path: 'Order', component: OrderComponent },
   { path: '',
   redirectTo: '/Products',
   pathMatch: 'full'
@@ -38,11 +43,24 @@ const appRoutes: Routes = [
     LoginComponent,
     ProductDetailComponent,
     ProductAdminComponent,
-    CartComponent
+    CartComponent,
+    GlobalLoaderComponent,
+    SmquantityComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
-    DxScrollViewModule, DxFormModule,DxTileViewModule,DxAutocompleteModule,DxButtonModule,DxSelectBoxModule,DxNumberBoxModule,DxLoadPanelModule,DxFileUploaderModule,DxListModule,
+    DxScrollViewModule, 
+    DxFormModule,
+    DxTileViewModule,
+    DxAutocompleteModule,
+    DxButtonModule,
+    DxSelectBoxModule,
+    DxNumberBoxModule,
+    DxLoadPanelModule,
+    DxFileUploaderModule,
+    DxListModule,
+    DxDataGridModule,
     RouterModule.forRoot(appRoutes), HttpClientJsonpModule,HttpClientModule
   ],
   providers: [
@@ -50,7 +68,8 @@ const appRoutes: Routes = [
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    DataStorageService
 
   ],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
-import { UserLoginRequest, UserRegistrationRequest } from './../common-model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserLoginRequest, UserRegistrationRequest, UserLoginResponse, UserAuthorizationRequest, UserAuthorizationResponse, User, UserRegistrationResponse } from './../common-model';
 import { LoginService } from './../login.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormModule, DxFormComponent, DxNumberBoxComponent } from 'devextreme-angular';
@@ -14,7 +15,7 @@ import notify from 'devextreme/ui/notify';
 export class LoginComponent implements OnInit {
   @ViewChild("loginForm") loginForm: DxFormComponent;
   @ViewChild("registrationForm") registrationForm: DxFormComponent;
-
+  loadingVisible:boolean=false;
   constructor(private _loginService:LoginService,private _router: Router) { }
   ngOnInit() {
     localStorage.setItem("token",null);
@@ -41,75 +42,85 @@ export class LoginComponent implements OnInit {
   };
 
   passwordBoxOptions:any={ mode: 'password' };
+  mobileNoOptions:any={format:"+91 ##########"};
+  
+  passwordPattern:any=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
   onLoginFormSubmit = function(e) {
     let userLoginRequest:UserLoginRequest=this.loginForm.instance.option("formData");
-    this._loginService.getJWTToken(userLoginRequest)
+    this.showLoader();
+    this._loginService.authenticateUser(userLoginRequest)
         .subscribe(
-          (response) => {
-            let authorization=response.headers.get("authorization");
-            console.log("response.headers ::::"+response.headers);
-            localStorage.setItem("token",authorization);
-            this._loginService.authenticateUser(userLoginRequest)
-                .subscribe(
-                  (userLoginResponse) => {
-                    if(userLoginResponse.status=="success"){
-
-                      this._loginService.fetchUserByEmailID(userLoginRequest.username)
-                          .subscribe(
-                              (user) =>{
-                                localStorage.setItem("user",JSON.stringify(user));
-                                this._router.navigate(['/Products']); 
-                              },
-                              (error) =>{
-                                console.log(error);
-                              },
-                              ()=>{
-                                
-                          }); 
-                    }else{
-                      notify("Login Error : "+response.message, "error", 600);
-                    }
-                  },
-                  (error) =>{
-                    notify("Login Error : "+error, "error", 600);
-                  },
-                  ()=>{
-                    
-                  });  
+          (userLoginResponse:UserLoginResponse) => {
+            if(userLoginResponse.statusCode==200){
+              let authorization=userLoginResponse.adminInitiateAuthResult.authenticationResult.accessToken;
+              console.log("authorization ::::"+authorization);
+              localStorage.setItem("token",authorization);  
+              let userAuthorizationRequest:UserAuthorizationRequest=new UserAuthorizationRequest(authorization);
+              this._loginService.authorizeUser(userAuthorizationRequest)
+                  .subscribe(
+                      (userAuthorizationResponse:UserAuthorizationResponse) =>{
+                        let loggedInUser:User = <User>userAuthorizationResponse.getUserResult.userAttributes.reduce(function( map, record, index ) {
+                          map[ record.name ] = record.value;
+                          return map;
+                        }, {});
+                       localStorage.setItem("user",JSON.stringify(loggedInUser));
+                        this._router.navigate(['/Products']); 
+                      },
+                      (error:HttpErrorResponse) =>{
+                        console.log(error);
+                        notify("Login Error : "+error.message, "error",10000);
+                        this.hideLoader();
+                      },
+                      ()=>{
+                        
+                      }
+                  ); 
+            }else{
+              notify("Login Error : "+userLoginResponse.errorMessage, "error",10000);
+              this.hideLoader();
+            }
           },
-          (error) =>{
-            console.log(error);
+          (error:HttpErrorResponse) =>{
+            notify("Login Error : "+error.message, "error");
+            this.hideLoader();
           },
           ()=>{
-            
-          });
+    
+          }
+        );  
     e.preventDefault();
   }  
 
   onRegistrationFormSubmit = function(e) {
     let userRegistrationRequest:UserRegistrationRequest=this.registrationForm.instance.option("formData");
-    console.log(JSON.stringify(userRegistrationRequest));
-    this._loginService.register(userRegistrationRequest)
+    this.showLoader();
+    this._loginService.registerUser(userRegistrationRequest)
         .subscribe(
-          (response) => {
-            if(response.status=="success"){
-              notify("Successfully Registered. Please Login.", "success", 600);
+          (userRegistrationResponse:UserRegistrationResponse) => {
+            if(userRegistrationResponse.sdkHttpMetadata.httpStatusCode==200){
+              notify("Successfully Registered. Please Login.", "success", 800);
               this.registrationForm.instance.resetValues();
             }else{
-              notify(response.message, "error", 600);
+              notify("Registration error ", "error", 800);
             }
           },
-          (error) =>{
+          (error:HttpErrorResponse) =>{
             console.log(error);
-            notify("Registration error", "error", 600);
+            notify("Registration error "+error.message, "error", 800);
           },
           ()=>{
-            
+            this.hideLoader();
           }
         );
     e.preventDefault();
   }  
 
-}
 
+  showLoader(): void {
+    this.loadingVisible = true;
+  }
+  hideLoader(): void {
+    this.loadingVisible = false;
+  }
+}

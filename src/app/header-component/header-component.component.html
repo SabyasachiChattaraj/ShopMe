@@ -9,11 +9,17 @@
           <span class="badge badge-light"></span>
         </a>
         <span id="smUserSection" [ngSwitch]="reloadUserSection()">
-          <a *ngSwitchCase="true">
-              {{loggedInUserInitials}} 
-          </a>
+          <ng-container *ngSwitchCase="true">
+            <a>
+                {{loggedInUserInitials}} 
+            </a>
+            <a class="fa fa-sign-out" routerLink="/Login">
+            </a>
+          </ng-container>
           <a class="fa fa-user" routerLink="/Login"  *ngSwitchCase="false">
           </a>
+
+
         </span>
         
     </div>

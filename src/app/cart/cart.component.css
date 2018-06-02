@@ -6,3 +6,12 @@
 .smcartcontainerright{
     padding:100px;
 }
+
+.smCartImage{
+    width:100px;
+    height:100px;
+}
+
+.smQuantityContainer{
+    padding:35px 0px;
+}

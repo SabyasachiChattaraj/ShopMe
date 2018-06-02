@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" id="smloginRegisterContainer">
     <div class="col-md-6 p-5 sm-register">
         <h1 class="font-weight-bold text-center pb-4">
             new user ?
@@ -10,42 +10,52 @@
                         [minColWidth]=300 
                         [colCount]=1 
                         [showColonAfterLabel]=false>
-                <dxi-item dataField="firstName" label="First Name">
+                <dxi-item dataField="firstName">
+                    <dxo-label text="First Name">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="First Name is required">
                     </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="lastename" label="Last Name">
+                <dxi-item dataField="lasteName">
+                    <dxo-label text="Last Name">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Last Name is required">
                     </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="email" label="Email Id">
+                <dxi-item dataField="email">
+                    <dxo-label text="Email Id">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Email Id is required">
                     </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="mobilenumber" label="Mobile No">
+                <dxi-item dataField="mobilenumber" editorType="dxNumberBox" [editorOptions]="mobileNoOptions">
+                    <dxo-label text="Mobile No">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Mobile No is required">
                     </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="dob" editorType="dxDateBox" label="Date Of Birth">
+                <dxi-item dataField="dob" editorType="dxDateBox">
+                    <dxo-label text="Date Of Birth">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Birthday is required">
                     </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="address" editorType="dxTextArea" label="Address">
-                </dxi-item>
-                <dxi-item dataField="password" [editorOptions]="passwordBoxOptions" label="Password">
-                    <dxi-validation-rule type="required" message="Password is required">
-                    </dxi-validation-rule>        
-                </dxi-item>
-                <!--
-                <dxi-item itemType="simple" 
-                            dataField="Accepted" 
-                            editorType="dxCheckBox" 
-                            alignment="right" 
-                            [editorOptions]="termsCheckboxOptions">
-                    <dxo-label [visible]="false">
+                <dxi-item dataField="address" editorType="dxTextArea">
+                    <dxo-label text="Address">
                     </dxo-label>
+                    <dxi-validation-rule type="required" message="Address is required">
+                    </dxi-validation-rule>
                 </dxi-item>
-                -->
+                <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
+                    <dxo-label text="Password">
+                    </dxo-label>
+                    <dxi-validation-rule type="required" message="Password is required">
+                    </dxi-validation-rule>   
+                    <dxi-validation-rule type="pattern"
+                                        [pattern]="passwordPattern"
+                                        message="Password must contains atleast : Special character , number , Capital Letter and length must be greater or equal to 8.">
+                    </dxi-validation-rule>     
+                </dxi-item>
                 <dxi-item itemType="button" alignment="center" [buttonOptions]="registerButtonOptions">
                 </dxi-item>
             </dx-form>
@@ -64,18 +74,31 @@
                     [colCount]=1 
                     [showColonAfterLabel]=false>
 
-                <dxi-item dataField="username">
+                <dxi-item dataField="userName">
+                    <dxo-label text="User Name">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Username is required">
                     </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
+                    <dxo-label text="Password">
+                    </dxo-label>
                     <dxi-validation-rule type="required" message="Password is required">
                     </dxi-validation-rule>        
                 </dxi-item>
-                <a href="">Forgot Password</a>
-                <dxi-item itemType="button" alignment="right" [buttonOptions]="loginButtonOptions">
+                <dxi-item itemType="button" alignment="center" [buttonOptions]="loginButtonOptions">
                 </dxi-item>
             </dx-form>
         </form>
     </div>
 </div>
+
+<dx-load-panel #loadPanel 
+               shadingColor="transparent" 
+               [position]="{ of: '#smloginRegisterContainer' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>

@@ -1,0 +1,118 @@
+<div id="smOrderContainer" [ngSwitch]="isOrderPlaced">
+    <div class="row" *ngSwitchCase="false">
+      <div class="col-md-8">
+        <div class="panel-group">
+          <div class="card mb-4">
+            <div class="card-header">Delivery Address</div>
+            <div class="card-body">
+                {{loggedInUser.given_name}} {{loggedInUser.family_name}}
+              <br> {{loggedInUser.address}}
+              <br> Mob: {{loggedInUser.phone_number}}
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Order Summary</div>
+            <div class="card-body">
+              <dx-data-grid id="gridContainer" [dataSource]="productsToBought">
+
+                <dxo-selection mode="single"></dxo-selection>
+
+                <dxi-column dataField="productName" caption="Product Name"></dxi-column>
+                <dxi-column dataField="productPriceToShow" caption="Price"></dxi-column>
+                <dxi-column dataField="quantity" caption="Quantity"></dxi-column>
+                <dxi-column caption="Amount" [calculateCellValue]="calculateAmount"></dxi-column>
+                
+                <dxo-summary [calculateCustomSummary]="calculateDeliveryCharge">
+                    <dxi-total-item
+                        summaryType="custom"
+                        name="SelectedRowsSummary">
+                    </dxi-total-item>
+                </dxo-summary>
+
+                <dxo-summary>
+                  <dxi-total-item column="Amount" summaryType="sum" aria-valuetext="Total">
+                  </dxi-total-item>
+                </dxo-summary>
+              </dx-data-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 ">
+        <div class="card smPaymentOptionsContainer">
+          <div class="card-header">Payment Options</div>
+          <div class="card-body">
+            <dx-list #smPaymentModeListComponent [items]="paymentOptions"  [showSelectionControls]="false" selectionMode="single" [selectedItems]="paymentOptions[0]">
+            </dx-list>
+          </div>
+        </div>
+        <div class="p-5 text-center">
+        <dx-button width="180" text="Place Order" alignment="center" type="default" (onClick)="placeOrder()"></dx-button>
+      </div>
+      </div>
+
+    </div>
+
+
+  <div class="row" id="smOrderPlacedContainer" *ngSwitchCase="true">
+      <div class="col-md-1"></div>
+    <div class="col-md-7">
+        <div class="card">
+          <div class="card-header">
+            Order Summary
+          </div>
+          <div class="card-body">
+            Order Id: {{placedOrderId}}
+            <br>
+            <a href="url">Email</a>
+
+            <a href="url">SMS</a>
+            <br> Payment Option: {{selectedPaymentOption}}
+          </div>
+          <dx-data-grid id="gridContainer" [dataSource]="productsToBought">
+
+              <dxo-selection mode="single"></dxo-selection>
+
+              <dxi-column dataField="productName" caption="Product Name"></dxi-column>
+              <dxi-column dataField="productPriceToShow" caption="Price"></dxi-column>
+              <dxi-column dataField="quantity" caption="Quantity"></dxi-column>
+              <dxi-column caption="Amount" [calculateCellValue]="calculateAmount"></dxi-column>
+              
+              <dxo-summary [calculateCustomSummary]="calculateDeliveryCharge">
+                  <dxi-total-item
+                      summaryType="custom"
+                      name="SelectedRowsSummary">
+                  </dxi-total-item>
+              </dxo-summary>
+
+              <dxo-summary>
+                <dxi-total-item column="Amount" summaryType="sum" aria-valuetext="Total">
+                </dxi-total-item>
+              </dxo-summary>
+            </dx-data-grid>
+        </div>
+      </div>
+        
+    
+    
+    <div class="col-md-3 text-center pt-5">
+      <h2 class="smtitle"> SM </h2>
+      <h2 class="smtitle"> shop me </h2>
+      <dx-button text="Continue Shopping" type="default" (onClick)="continueShopping()"></dx-button>
+    </div>
+  </div>
+
+  <div class="col-md-1"></div>
+
+</div>
+
+
+<dx-load-panel #loadPanel 
+               shadingColor="transparent" 
+               [position]="{ of: '#smOrderContainer' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>

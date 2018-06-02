@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ProductService } from './../product.service';
-import { IProduct } from './../iproduct';
+import { IProduct, FetchProductResponse } from './../common-model';
 import { Component, OnInit } from '@angular/core';
 import { DxAutocompleteModule, DxButtonModule, DxLoadPanelModule } from 'devextreme-angular';
+import notify from 'devextreme/ui/notify';
 @Component({
   selector: 'smapp-products-component',
   templateUrl: './products.component.html',
@@ -24,37 +26,41 @@ export class ProductsComponent implements OnInit {
 
   fetchAllProducts():void{
     this.showLoader();
-    this._productService.getProducts().subscribe(
-      (data) => {
-        this.productsMaster = data.data;
-      },
-      (err) => {
-        console.error(err);
-      },
-      () => {
-        this.products = this.productsMaster;
-        this.productCategories = this.getProductCategories();
-        this.clearSelectedProduct();
-        this.hideLoader();
-      }
-    );
+    this._productService.getProducts()
+        .subscribe(
+              (fetchProductResponse:FetchProductResponse) => {
+                this.productsMaster = fetchProductResponse.data;
+              },
+              (error:HttpErrorResponse) => {
+                console.error(error);
+                notify("Fetch Product Error : "+error.message, "error",10000);
+              },
+              () => {
+                this.products = this.productsMaster;
+                this.productCategories = this.getProductCategories();
+                this.clearSelectedProduct();
+                this.hideLoader();
+              }
+        );
   }
 
   searchProductBycategory(): void {
     if (this.productCategoryUserInput.trim().length > 0) {
       this.showLoader();
-      this._productService.searchProducts(this.productCategoryUserInput.trim()).subscribe(
-        (data) => {
-          this.products = data.data;
-        },
-        (err) => {
-          console.error(err);
-        },
-        () => {
-          this.clearSelectedProduct();
-          this.hideLoader();
-        }
-      );
+      this._productService.searchProducts(this.productCategoryUserInput.trim())
+          .subscribe(
+              (fetchProductResponse:FetchProductResponse) => {
+                this.products = fetchProductResponse.data;
+              },
+              (error:HttpErrorResponse) => {
+                console.error(error);
+                notify("Fetch Product Error : "+error.message, "error",10000);
+              },
+              () => {
+                this.clearSelectedProduct();
+                this.hideLoader();
+              }
+          );
     }
   }
 

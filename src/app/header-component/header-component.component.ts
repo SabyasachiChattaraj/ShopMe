@@ -1,6 +1,6 @@
 import { CartService } from './../cart.service';
 
-import { User, FetchAllCartByUserRequest, FetchAllCartByUserResponse } from './../common-model';
+import { User, FetchAllCartByUserRequest, FetchAllCartByUserResponse, UserAttribute } from './../common-model';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Routes, ActivatedRoute,Router } from '@angular/router';
 import notify from 'devextreme/ui/notify';
@@ -26,18 +26,19 @@ export class HeaderComponentComponent implements OnInit {
 
   reloadUserSection():boolean{
     let user:string=localStorage.getItem("user");
-    if(user!="null"){
-      this.loggedInUser=JSON.parse(localStorage.getItem("user"));
-      this.loggedInUserInitials=this.loggedInUser.firstName.substr(0,1).toUpperCase()
-      if(this.loggedInUser.lasteName!=null){
-        this.loggedInUserInitials=this.loggedInUserInitials+this.loggedInUser.lasteName.substr(0,1).toUpperCase();
-      }
-      return true;
-      
-    }else{
-      return false;
+    let isLoggedIn:boolean=false;
+    
+    if(user){
+      this.loggedInUser=JSON.parse(user);
+      if(this.loggedInUser !=null && typeof this.loggedInUser == "object"){
+        this.loggedInUserInitials=this.loggedInUser.given_name.substr(0,1).toUpperCase()
+        if(this.loggedInUser["family_name"]!=null){
+          this.loggedInUserInitials=this.loggedInUserInitials+this.loggedInUser.family_name.substr(0,1).toUpperCase();
+        }
+        isLoggedIn=true;
+      }  
     }
-
+    return isLoggedIn;
   }
 
   getCartCount():number{

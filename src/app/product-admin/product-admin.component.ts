@@ -1,4 +1,4 @@
-import { IProduct } from './../iproduct';
+import { IProduct } from './../common-model';
 import { Component, OnInit } from '@angular/core';
 import { DxFormModule,DxFileUploaderModule} from 'devextreme-angular';
 
