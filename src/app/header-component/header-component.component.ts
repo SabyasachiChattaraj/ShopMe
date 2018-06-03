@@ -1,3 +1,4 @@
+import { DataStorageService } from './../data-storage.service';
 import { CartService } from './../cart.service';
 
 import { User, FetchAllCartByUserRequest, FetchAllCartByUserResponse, UserAttribute } from './../common-model';
@@ -12,10 +13,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   providers:[CartService]
 })
 export class HeaderComponentComponent implements OnInit {
-
+  loggedInUserName:string=null;
   loggedInUser:User=null;
   loggedInUserInitials:string=null;
-  constructor(private _cartService:CartService) { 
+  cartLink:string="/Login";
+  constructor(private _cartService:CartService,private _router:Router,private _dataStorageService:DataStorageService) { 
     
   }
 
@@ -32,9 +34,11 @@ export class HeaderComponentComponent implements OnInit {
       this.loggedInUser=JSON.parse(user);
       if(this.loggedInUser !=null && typeof this.loggedInUser == "object"){
         this.loggedInUserInitials=this.loggedInUser.given_name.substr(0,1).toUpperCase()
+        this.loggedInUserName=this.loggedInUser.given_name +" "+this.loggedInUser.family_name;
         if(this.loggedInUser["family_name"]!=null){
           this.loggedInUserInitials=this.loggedInUserInitials+this.loggedInUser.family_name.substr(0,1).toUpperCase();
         }
+        this.cartLink="/Cart";
         isLoggedIn=true;
       }  
     }

@@ -16,7 +16,9 @@ export class LoginComponent implements OnInit {
   @ViewChild("loginForm") loginForm: DxFormComponent;
   @ViewChild("registrationForm") registrationForm: DxFormComponent;
   loadingVisible:boolean=false;
-  constructor(private _loginService:LoginService,private _router: Router) { }
+  constructor(private _loginService:LoginService,private _router: Router) {
+    this.maxDate = new Date(this.maxDate.setFullYear(this.maxDate.getFullYear() - 18));
+   }
   ngOnInit() {
     localStorage.setItem("token",null);
     localStorage.setItem("user",null);
@@ -42,9 +44,12 @@ export class LoginComponent implements OnInit {
   };
 
   passwordBoxOptions:any={ mode: 'password' };
-  mobileNoOptions:any={format:"+91 ##########"};
+  mobileNoOptions:any={};
   
   passwordPattern:any=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+  namePattern: any =/^[^0-9]+$/;
+  emailPattern:any=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  maxDate: Date = new Date();
 
   onLoginFormSubmit = function(e) {
     let userLoginRequest:UserLoginRequest=this.loginForm.instance.option("formData");
@@ -66,6 +71,7 @@ export class LoginComponent implements OnInit {
                         }, {});
                        localStorage.setItem("user",JSON.stringify(loggedInUser));
                         this._router.navigate(['/Products']); 
+                        notify("Successfully Logged In!", "success", 800);
                       },
                       (error:HttpErrorResponse) =>{
                         console.log(error);
@@ -95,15 +101,21 @@ export class LoginComponent implements OnInit {
   onRegistrationFormSubmit = function(e) {
     let userRegistrationRequest:UserRegistrationRequest=this.registrationForm.instance.option("formData");
     this.showLoader();
+    userRegistrationRequest.dob= this.convertDate(userRegistrationRequest.dob);
     this._loginService.registerUser(userRegistrationRequest)
         .subscribe(
           (userRegistrationResponse:UserRegistrationResponse) => {
-            if(userRegistrationResponse.sdkHttpMetadata.httpStatusCode==200){
-              notify("Successfully Registered. Please Login.", "success", 800);
-              this.registrationForm.instance.resetValues();
+            if(userRegistrationResponse.sdkHttpMetadata){
+              if(userRegistrationResponse.sdkHttpMetadata.httpStatusCode==200){
+                notify("Successfully Registered. Please Login.", "success", 800);
+                this.registrationForm.instance.resetValues();
+              }else{
+                notify("Registration error ", "error", 800);
+              }
             }else{
               notify("Registration error ", "error", 800);
             }
+            
           },
           (error:HttpErrorResponse) =>{
             console.log(error);
@@ -122,5 +134,15 @@ export class LoginComponent implements OnInit {
   }
   hideLoader(): void {
     this.loadingVisible = false;
+  }
+
+  convertDate(dateTobeConverted:string):string{
+      let d = new Date(dateTobeConverted);
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      let year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [day,month,year].join('/');
   }
 }

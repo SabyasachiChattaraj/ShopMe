@@ -15,11 +15,19 @@
                     </dxo-label>
                     <dxi-validation-rule type="required" message="First Name is required">
                     </dxi-validation-rule>
+                    <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
+                    </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="lasteName">
                     <dxo-label text="Last Name">
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Last Name is required">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid Last Name">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="stringLength" [min]="3" message="Last Name must have at least 3 symbols">     
                     </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="email">
@@ -27,11 +35,17 @@
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Email Id is required">
                     </dxi-validation-rule>
+                    <dxi-validation-rule type="pattern" [pattern]="emailPattern" message="Please enter valid email address">
+                    </dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="mobilenumber" editorType="dxNumberBox" [editorOptions]="mobileNoOptions">
+                <dxi-item dataField="mobilenumber" [editorOptions]="mobileNoOptions">
                     <dxo-label text="Mobile No">
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Mobile No is required">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="stringLength" [min]="13" [max]="13" message="Please enter valid mobile no">     
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="numeric" message="Please enter valid mobile no">     
                     </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="dob" editorType="dxDateBox">
@@ -39,11 +53,15 @@
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Birthday is required">
                     </dxi-validation-rule>
+                    <dxi-validation-rule type="range" [max]="maxDate" message="You must be at least 18 years old">
+                    </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="address" editorType="dxTextArea">
                     <dxo-label text="Address">
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Address is required">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="stringLength" [min]="3" message="Address must have at least 3 symbols">     
                     </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
@@ -78,6 +96,10 @@
                     <dxo-label text="User Name">
                     </dxo-label>
                     <dxi-validation-rule type="required" message="Username is required">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid User Name">
+                    </dxi-validation-rule>
+                    <dxi-validation-rule type="stringLength" [min]="3" message="User Name must have at least 3 symbols">     
                     </dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">

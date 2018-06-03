@@ -45,23 +45,23 @@ export class ProductsComponent implements OnInit {
   }
 
   searchProductBycategory(): void {
-    if (this.productCategoryUserInput.trim().length > 0) {
-      this.showLoader();
-      this._productService.searchProducts(this.productCategoryUserInput.trim())
-          .subscribe(
-              (fetchProductResponse:FetchProductResponse) => {
-                this.products = fetchProductResponse.data;
-              },
-              (error:HttpErrorResponse) => {
-                console.error(error);
-                notify("Fetch Product Error : "+error.message, "error",10000);
-              },
-              () => {
-                this.clearSelectedProduct();
-                this.hideLoader();
-              }
-          );
-    }
+    
+    this.showLoader();
+    this._productService.searchProducts(this.productCategoryUserInput.trim())
+        .subscribe(
+            (fetchProductResponse:FetchProductResponse) => {
+              this.products = fetchProductResponse.data;
+            },
+            (error:HttpErrorResponse) => {
+              console.error(error);
+              notify("Fetch Product Error : "+error.message, "error",10000);
+            },
+            () => {
+              this.clearSelectedProduct();
+              this.hideLoader();
+            }
+        );
+    
   }
 
   getProductCategories():Array<string>{

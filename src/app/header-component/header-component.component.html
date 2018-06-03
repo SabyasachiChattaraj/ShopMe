@@ -5,18 +5,18 @@
     <h2 class="smtitle"> shop me </h2>
 
     <div class="user-account">
-        <a class="fa fa-shopping-cart pr-3" routerLink="/Cart">
+        <a class="fa fa-shopping-cart pr-3" [routerLink]="cartLink" title="Cart">
           <span class="badge badge-light"></span>
         </a>
         <span id="smUserSection" [ngSwitch]="reloadUserSection()">
           <ng-container *ngSwitchCase="true">
-            <a>
+            <a  class="mr-2" [title]="loggedInUserName">
                 {{loggedInUserInitials}} 
             </a>
-            <a class="fa fa-sign-out" routerLink="/Login">
+            <a class="fa fa-sign-out" routerLink="/Login" title="Logout">
             </a>
           </ng-container>
-          <a class="fa fa-user" routerLink="/Login"  *ngSwitchCase="false">
+          <a class="fa fa-user" routerLink="/Login"  *ngSwitchCase="false" title="Login">
           </a>
 
 

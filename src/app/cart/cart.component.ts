@@ -59,6 +59,7 @@ export class CartComponent implements OnInit {
                   this.cartProductsArray=data.map((eachData)=>{
                       return eachData.data[0];
                   });
+                  /*
                   let cartTotalItems:number=0;
                   let cartTotalPrice:number=0;
                   this.cartProductsArray.forEach((eachCartProduct)=>{
@@ -69,6 +70,7 @@ export class CartComponent implements OnInit {
                   });
                   this.cartTotalItems=cartTotalItems;
                   this.cartTotalPrice=cartTotalPrice;
+                  */
                 },
                 (error:HttpErrorResponse)=>{
 
@@ -181,5 +183,17 @@ export class CartComponent implements OnInit {
     }else{
       notify("Please select atleast one item !","error", 600);
     }
+  }
+
+  onCartSelectionChanged(e):void{
+    let selectedCartItems:IProduct[]=<IProduct[]>this.smCartListComponent.instance.option("selectedItems");
+    let cartTotalItems:number=0;
+    let cartTotalPrice:number=0;
+    selectedCartItems.forEach((eachCartProduct)=>{
+     cartTotalItems=cartTotalItems+eachCartProduct.quantity;
+      cartTotalPrice=cartTotalPrice+eachCartProduct.productPriceToShow*eachCartProduct.quantity;
+    });
+    this.cartTotalItems=cartTotalItems;
+    this.cartTotalPrice=cartTotalPrice;
   }
 }

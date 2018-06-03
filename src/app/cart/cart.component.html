@@ -9,7 +9,7 @@
             <dx-list [items]="cartProducts"
             [height]="450"
             selectionMode="multiple"
-            [showSelectionControls]="true" #smCartListComponent>
+            [showSelectionControls]="true" #smCartListComponent [selectedItems]="" (onSelectionChanged)="onCartSelectionChanged($event)">
               <div *dxTemplate="let item of 'item'">
                     <div class="row">
                         <div class="col-md-3">

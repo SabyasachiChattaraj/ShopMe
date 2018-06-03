@@ -1,17 +1,20 @@
+import { CartService } from './../cart.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from './../order.service';
-import { IProduct, User, PlaceOrderRequest, PlaceOrderResponse } from './../common-model';
+import { IProduct, User, PlaceOrderRequest, PlaceOrderResponse, DeleteCartByUserProductRequest } from './../common-model';
 import { DataStorageService } from './../data-storage.service';
 import { DxDataGridModule, DxListComponent } from 'devextreme-angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import notify from 'devextreme/ui/notify';
+import 'rxjs/add/observable/forkJoin'
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css'],
-  providers:[OrderService]
+  providers:[OrderService,CartService]
 })
 export class OrderComponent implements OnInit {
   isOrderPlaced:boolean=false;
@@ -22,7 +25,7 @@ export class OrderComponent implements OnInit {
   loadingVisible:boolean=false;
   placedOrderId:number=-1;
   selectedPaymentOption:string="COD";
-  constructor(private _dataStorageService:DataStorageService,private _orderService:OrderService,private _router: Router) {
+  constructor(private _dataStorageService:DataStorageService,private _orderService:OrderService,private _router: Router,private _cartService:CartService) {
     
    }
 
@@ -45,7 +48,7 @@ export class OrderComponent implements OnInit {
   placeOrder():void{
     let paymentMode=this.smPaymentModeListComponent.instance.option("selectedItems");
     this.selectedPaymentOption=paymentMode;
-    if(paymentMode!=null){
+    if(paymentMode!=null&&paymentMode=="COD"){
       let productlist=this.productsToBought.map((eachProduct)=>{return eachProduct.productId;});
       let quantity=0;
       let amount=50;
@@ -60,15 +63,37 @@ export class OrderComponent implements OnInit {
         .subscribe(
           (placeOrderResponse:PlaceOrderResponse) => {
             if(placeOrderResponse.code=="200"){
+              
+              let loggedInUser=this._dataStorageService.getLoggedInUser();
+              let loggedInUserId=loggedInUser.given_name+loggedInUser.family_name;
+              let observableBatch = [];
+              this.productsToBought.forEach(( eachProductBought, key ) => {
+                let deleteCartByUserProductRequest:DeleteCartByUserProductRequest=new DeleteCartByUserProductRequest(loggedInUserId,eachProductBought.productId);
+                observableBatch.push( this._cartService.deleteCartByUserProduct(deleteCartByUserProductRequest) );
+              });
+              Observable.forkJoin(observableBatch)
+                .subscribe(
+                      (data:any)=>{
+                        console.log(data);
+                      },
+                      (error:HttpErrorResponse)=>{
+                         notify("Place Order Error "+error.message, "error", 800);
+                      },
+                      ()=>{
+                      
+                      }
+                  );
               this.placedOrderId=placeOrderResponse.data.orderid;
               this.isOrderPlaced=true;
             }else{
               notify("Place Order Error ", "error", 800);
+              this.hideLoader();
             }
           },
           (error:HttpErrorResponse) =>{
             console.log(error);
             notify("Place Order Error "+error.message, "error", 800);
+            this.hideLoader();
           },
           ()=>{
             this.hideLoader();
@@ -76,7 +101,7 @@ export class OrderComponent implements OnInit {
           }
         );
     }else{
-      notify("Currently we are accepting only COD Orders !","error", 600);
+      notify("Please select payment Mode.Currently we are accepting only COD Orders !","error", 600);
     }
   }
 

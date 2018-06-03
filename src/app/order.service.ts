@@ -8,7 +8,7 @@ import { PlaceOrderRequest, PlaceOrderResponse } from './common-model';
 @Injectable()
 export class OrderService {
 
-  private readonly PLACE_ORDER_URL="https://cors-anywhere.herokuapp.com/https://d2yanpnifh.execute-api.ap-south-1.amazonaws.com/prod/buyproducts";
+  private readonly PLACE_ORDER_URL="https://d2yanpnifh.execute-api.ap-south-1.amazonaws.com/prod/buyproducts";
 
   constructor(private _http:HttpClient) { }
 
