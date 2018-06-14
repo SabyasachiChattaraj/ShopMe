@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { UserLoginRequest, UserRegistrationRequest, UserLoginResponse, UserAuthorizationRequest, UserAuthorizationResponse, User, UserRegistrationResponse } from './../common-model';
+import { UserLoginRequest, UserRegistrationRequest, UserLoginResponse, User, UserRegistrationResponse, UserRegistrationConfirmationRequest, UserRegistrationConfirmationResponse } from './../common-model';
 import { LoginService } from './../login.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormModule, DxFormComponent, DxNumberBoxComponent } from 'devextreme-angular';
@@ -15,7 +15,10 @@ import notify from 'devextreme/ui/notify';
 export class LoginComponent implements OnInit {
   @ViewChild("loginForm") loginForm: DxFormComponent;
   @ViewChild("registrationForm") registrationForm: DxFormComponent;
+  @ViewChild("registrationConfirmationForm") registrationConfirmationForm: DxFormComponent;
+  
   loadingVisible:boolean=false;
+  registrationConfirm:boolean=false;
   constructor(private _loginService:LoginService,private _router: Router) {
     this.maxDate = new Date(this.maxDate.setFullYear(this.maxDate.getFullYear() - 18));
    }
@@ -31,6 +34,13 @@ export class LoginComponent implements OnInit {
     width:200
   };
 
+  registerConfirmButtonOptions: any = {
+    text: "Confirm Registration",
+    type: "default",
+    useSubmitBehavior: true,
+    width:200
+  };
+
   loginButtonOptions: any = {
     text: "Login",
     type: "default",
@@ -41,6 +51,10 @@ export class LoginComponent implements OnInit {
   termsCheckboxOptions:any={ 
     text: 'I agree to the Terms and Conditions',
     value: false
+  };
+
+  confirmRegisterUserNameOptions:any={
+    value:"GPAUL"
   };
 
   passwordBoxOptions:any={ mode: 'password' };
@@ -61,27 +75,15 @@ export class LoginComponent implements OnInit {
               let authorization=userLoginResponse.adminInitiateAuthResult.authenticationResult.accessToken;
               console.log("authorization ::::"+authorization);
               localStorage.setItem("token",authorization);  
-              let userAuthorizationRequest:UserAuthorizationRequest=new UserAuthorizationRequest(authorization);
-              this._loginService.authorizeUser(userAuthorizationRequest)
-                  .subscribe(
-                      (userAuthorizationResponse:UserAuthorizationResponse) =>{
-                        let loggedInUser:User = <User>userAuthorizationResponse.getUserResult.userAttributes.reduce(function( map, record, index ) {
-                          map[ record.name ] = record.value;
-                          return map;
-                        }, {});
-                       localStorage.setItem("user",JSON.stringify(loggedInUser));
-                        this._router.navigate(['/Products']); 
-                        notify("Successfully Logged In!", "success", 800);
-                      },
-                      (error:HttpErrorResponse) =>{
-                        console.log(error);
-                        notify("Login Error : "+error.message, "error",10000);
-                        this.hideLoader();
-                      },
-                      ()=>{
-                        
-                      }
-                  ); 
+              
+              let loggedInUser:User = <User>userLoginResponse.getUserResult.userAttributes.reduce(function( map, record, index ) {
+                map[ record.name ] = record.value;
+                return map;
+              }, {});
+              localStorage.setItem("user",JSON.stringify(loggedInUser));
+              this._router.navigate(['/Products']); 
+              notify("Successfully Logged In!", "success", 800);
+            
             }else{
               notify("Login Error : "+userLoginResponse.errorMessage, "error",10000);
               this.hideLoader();
@@ -105,10 +107,12 @@ export class LoginComponent implements OnInit {
     this._loginService.registerUser(userRegistrationRequest)
         .subscribe(
           (userRegistrationResponse:UserRegistrationResponse) => {
-            if(userRegistrationResponse.sdkHttpMetadata){
-              if(userRegistrationResponse.sdkHttpMetadata.httpStatusCode==200){
-                notify("Successfully Registered. Please Login.", "success", 800);
+            if(userRegistrationResponse.signUpResult.sdkHttpMetadata){
+              if(userRegistrationResponse.signUpResult.sdkHttpMetadata.httpStatusCode==200){
                 this.registrationForm.instance.resetValues();
+                this.registrationConfirm=true;
+                this.confirmRegisterUserNameOptions.value=userRegistrationRequest.firstName+userRegistrationRequest.lastName;
+                notify("Please enter confirmation code received via email.", "success", 800);
               }else{
                 notify("Registration error ", "error", 800);
               }
@@ -128,6 +132,36 @@ export class LoginComponent implements OnInit {
     e.preventDefault();
   }  
 
+  onRegistrationConfirmationFormSubmit = function(e) {
+    let userRegistrationConfirmationRequest:UserRegistrationConfirmationRequest=this.registrationConfirmationForm.instance.option("formData");
+    this.showLoader();
+    this._loginService.confirmRegistration(userRegistrationConfirmationRequest)
+        .subscribe(
+          (userRegistrationConfirmationResponse:UserRegistrationConfirmationResponse) => {
+            if(userRegistrationConfirmationResponse.confirmSignUpResult.sdkHttpMetadata){
+              if(userRegistrationConfirmationResponse.confirmSignUpResult.sdkHttpMetadata.httpStatusCode==200){
+                this.registrationConfirmationForm.instance.resetValues();
+                this.registrationForm.instance.resetValues();
+                this.registrationConfirm=false;
+                notify("Successfully registered. Please Login.", "success", 800);
+              }else{
+                notify("Registration Confirm error ", "error", 800);
+              }
+            }else{
+              notify("Registration Confirm error ", "error", 800);
+            }
+            
+          },
+          (error:HttpErrorResponse) =>{
+            console.log(error);
+            notify("Registration Confirm error "+error.message, "error", 800);
+          },
+          ()=>{
+            this.hideLoader();
+          }
+        );
+    e.preventDefault();
+  }  
 
   showLoader(): void {
     this.loadingVisible = true;

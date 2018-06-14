@@ -9,3 +9,11 @@
     border-radius: .5rem !important;
 }
 
+.smProductCaption > p{
+    margin:0;
+}
+
+.smProductMRP, .smProductMRP i{
+    text-decoration: line-through;
+}
+

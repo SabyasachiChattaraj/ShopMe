@@ -17,11 +17,14 @@
                        placeholder="Color">
         </dx-select-box>
 
-        <p class="px-2 pt-3">
-            Price : Rs {{product.productPriceToShow}}
+        <p class="smProductMRP px-2 pt-3">
+            MRP : <i class="fa fa-inr">{{product.productMrp}} </i>
         </p>
         <p class="px-2">
-            Disc. Price : Rs {{product.productDisc}}
+            Discount : <i class="fa fa-inr"> {{product.productDisc}} </i>
+        </p>
+        <p class="px-2">
+            Price : <i class="fa fa-inr"> {{product.productPriceToShow}} </i>
         </p>
 
         <div class="row sm-pd-buttons">

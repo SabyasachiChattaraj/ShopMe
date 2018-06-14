@@ -1,83 +1,124 @@
 <div class="row" id="smloginRegisterContainer">
     <div class="col-md-6 p-5 sm-register">
-        <h1 class="font-weight-bold text-center pb-4">
-            new user ?
-        </h1>
-        <form (submit)="onRegistrationFormSubmit($event)">
-            <dx-form id="form" 
-                        #registrationForm
-                        labelLocation="left" 
-                        [minColWidth]=300 
-                        [colCount]=1 
-                        [showColonAfterLabel]=false>
-                <dxi-item dataField="firstName">
-                    <dxo-label text="First Name">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="First Name is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="lasteName">
-                    <dxo-label text="Last Name">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Last Name is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid Last Name">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="stringLength" [min]="3" message="Last Name must have at least 3 symbols">     
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="email">
-                    <dxo-label text="Email Id">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Email Id is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="pattern" [pattern]="emailPattern" message="Please enter valid email address">
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="mobilenumber" [editorOptions]="mobileNoOptions">
-                    <dxo-label text="Mobile No">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Mobile No is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="stringLength" [min]="13" [max]="13" message="Please enter valid mobile no">     
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="numeric" message="Please enter valid mobile no">     
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="dob" editorType="dxDateBox">
-                    <dxo-label text="Date Of Birth">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Birthday is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="range" [max]="maxDate" message="You must be at least 18 years old">
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="address" editorType="dxTextArea">
-                    <dxo-label text="Address">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Address is required">
-                    </dxi-validation-rule>
-                    <dxi-validation-rule type="stringLength" [min]="3" message="Address must have at least 3 symbols">     
-                    </dxi-validation-rule>
-                </dxi-item>
-                <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
-                    <dxo-label text="Password">
-                    </dxo-label>
-                    <dxi-validation-rule type="required" message="Password is required">
-                    </dxi-validation-rule>   
-                    <dxi-validation-rule type="pattern"
-                                        [pattern]="passwordPattern"
-                                        message="Password must contains atleast : Special character , number , Capital Letter and length must be greater or equal to 8.">
-                    </dxi-validation-rule>     
-                </dxi-item>
-                <dxi-item itemType="button" alignment="center" [buttonOptions]="registerButtonOptions">
-                </dxi-item>
-            </dx-form>
-        </form>
+        
+        <div id="smRegistrationContainer" [ngSwitch]="registrationConfirm">
+            <div *ngSwitchCase="false">
+                <h1 class="font-weight-bold text-center pb-4">
+                    new user ?
+                </h1>
+                <form (submit)="onRegistrationFormSubmit($event)">
+                    <dx-form id="form" 
+                                #registrationForm
+                                labelLocation="left" 
+                                [minColWidth]=300 
+                                [colCount]=1 
+                                [showColonAfterLabel]=false>
+                        <dxi-item dataField="firstName">
+                            <dxo-label text="First Name">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="First Name is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="lastName">
+                            <dxo-label text="Last Name">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Last Name is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid Last Name">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="3" message="Last Name must have at least 3 symbols">     
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="email">
+                            <dxo-label text="Email Id">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Email Id is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="pattern" [pattern]="emailPattern" message="Please enter valid email address">
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="mobilenumber" [editorOptions]="mobileNoOptions">
+                            <dxo-label text="Mobile No">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Mobile No is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="13" [max]="13" message="Please enter valid mobile no">     
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="numeric" message="Please enter valid mobile no">     
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="dob" editorType="dxDateBox">
+                            <dxo-label text="Date Of Birth">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Birthday is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="range" [max]="maxDate" message="You must be at least 18 years old">
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="address" editorType="dxTextArea">
+                            <dxo-label text="Address">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Address is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="3" message="Address must have at least 3 symbols">     
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="password" [editorOptions]="passwordBoxOptions">
+                            <dxo-label text="Password">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Password is required">
+                            </dxi-validation-rule>   
+                            <dxi-validation-rule type="pattern"
+                                                [pattern]="passwordPattern"
+                                                message="Password must contains atleast : Special character , number , Capital Letter and length must be greater or equal to 8.">
+                            </dxi-validation-rule>     
+                        </dxi-item>
+                        <dxi-item itemType="button" alignment="center" [buttonOptions]="registerButtonOptions">
+                        </dxi-item>
+                    </dx-form>
+                </form>
+            </div>
+            <div class="smRegisterConfirmContainer" *ngSwitchCase="true">
+                <h1 class="font-weight-bold text-center pb-4">
+                    Confirm Sign Up
+                </h1>
+                <form (submit)="onRegistrationConfirmationFormSubmit($event)">
+                    <dx-form id="form" 
+                                #registrationConfirmationForm
+                                labelLocation="left" 
+                                [minColWidth]=300 
+                                [colCount]=1 
+                                [showColonAfterLabel]=false>
+                        <dxi-item dataField="userName" [editorOptions]="confirmRegisterUserNameOptions" editorType="dxTextBox" [disabled]=true>
+                            <dxo-label text="User Name">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="User Name is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
+                            </dxi-validation-rule>
+                        </dxi-item>        
+                        <dxi-item dataField="accessCode" editorType="dxNumberBox">
+                            <dxo-label text="Confirmation Code">
+                            </dxo-label>
+                            <dxi-validation-rule type="required" message="Confirmation Code is required">
+                            </dxi-validation-rule>
+                            <dxi-validation-rule type="stringLength" [min]="6" [max]="6" message="Confirmation Code must have at 6 digits">     
+                            </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item itemType="button" alignment="center" [buttonOptions]="registerConfirmButtonOptions">
+                        </dxi-item>
+                   </dx-form>
+                </form>        
+            </div>
+        </div>
+        
+       
     </div>
 
     <div class="col-md-6 sm-login">

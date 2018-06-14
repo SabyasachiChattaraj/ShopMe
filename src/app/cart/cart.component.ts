@@ -59,18 +59,18 @@ export class CartComponent implements OnInit {
                   this.cartProductsArray=data.map((eachData)=>{
                       return eachData.data[0];
                   });
-                  /*
+                  
                   let cartTotalItems:number=0;
                   let cartTotalPrice:number=0;
                   this.cartProductsArray.forEach((eachCartProduct)=>{
                     let cartItem=response.data.find((eachCartItem) => eachCartItem.productid === eachCartProduct.productId);
                     eachCartProduct.quantity=cartItem.quantity;
-                    cartTotalItems=cartTotalItems+eachCartProduct.quantity;
-                    cartTotalPrice=cartTotalPrice+eachCartProduct.productPriceToShow*eachCartProduct.quantity;
+                    //cartTotalItems=cartTotalItems+eachCartProduct.quantity;
+                    //cartTotalPrice=cartTotalPrice+eachCartProduct.productPriceToShow*eachCartProduct.quantity;
                   });
                   this.cartTotalItems=cartTotalItems;
                   this.cartTotalPrice=cartTotalPrice;
-                  */
+                  
                 },
                 (error:HttpErrorResponse)=>{
 
@@ -153,7 +153,7 @@ export class CartComponent implements OnInit {
   quantityChange(event,quantity,productId):void {
     let loggedInUser:User=(<User>JSON.parse(localStorage.getItem("user")));
     let userId=loggedInUser.given_name+loggedInUser.family_name;
-    let updateQuantity=event-quantity;
+    let updateQuantity=event;
     console.log(updateQuantity);
     let cartQuantityUpdateRequest:CartQuantityUpdateRequest=new CartQuantityUpdateRequest(userId,productId,updateQuantity);
     this._cartService.updateCartQuantity(cartQuantityUpdateRequest)

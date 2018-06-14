@@ -22,3 +22,7 @@
 .sm-product-count-container .dx-texteditor-input{
     padding: 0px 15px;
 }
+
+.smProductMRP, .smProductMRP i{
+    text-decoration: line-through;
+}

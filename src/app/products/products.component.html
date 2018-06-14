@@ -45,10 +45,11 @@
                   (click)="onSelect(product)">
             <div class="sm-product-container thumbnail p-4 text-center">
                 <img src="{{product.productImagePath}}" alt="{{product.productName}}">
-                <div class="captionm pt-3">
+                <div class="smProductCaption pt-3">
                     <h4>{{product.productName}}</h4>
-                    <p>Price : Rs {{product.productPriceToShow}}</p>
-                    <p>Disc. Price : Rs {{product.productDisc}}</p>
+                    <p class="smProductMRP">MRP : <i class="fa fa-inr">{{product.productMrp}} </i> </p>
+                    <p>Discount : <i class="fa fa-inr"> {{product.productDisc}} </i></p>
+                    <p>Price : <i class="fa fa-inr"> {{product.productPriceToShow}} </i></p>
                 </div>
             </div>
         </dxi-item>

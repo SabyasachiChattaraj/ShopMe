@@ -25,11 +25,12 @@ const appRoutes: Routes = [
   { path: 'Admin', component: ProductAdminComponent },
   { path: 'Cart', component: CartComponent },
   { path: 'Order', component: OrderComponent },
-  { path: '',
-  redirectTo: '/Products',
-  pathMatch: 'full'
-},
-{ path: '**', component: ProductsComponent }
+  {
+    path: '',
+    redirectTo: '/Products',
+    pathMatch: 'full'
+  },
+  { path: '**', component: ProductsComponent }
 ];
 
 
@@ -64,11 +65,11 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes), HttpClientJsonpModule,HttpClientModule
   ],
   providers: [
-    {
+    /*{
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    },
+    },*/
     DataStorageService
 
   ],
