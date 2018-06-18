@@ -11,3 +11,8 @@
 .smRegisterConfirmContainer{
     padding: 100px 0px 120px 0px;
 }
+
+.smForgotPasswordLink{
+    text-decoration: underline !important;
+    color: darkslateblue !important;
+}

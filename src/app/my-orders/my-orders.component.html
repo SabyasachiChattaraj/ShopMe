@@ -1,0 +1,58 @@
+
+<div class="card" id="smMyOrdersContainer">
+  <div class="card-header">My Orders</div>
+  <div class="card-body">
+      <dx-data-grid
+          id="smMyOrdersGridContainer"
+          [dataSource]="myOrders"
+          [masterDetail]="{ enabled: true, template: 'detail' }"
+          (onRowExpanding)="loadProductDetails($event)"
+          >
+          <dxo-export [enabled]="true" fileName="MyOrders" [allowExportSelectedData]="false"></dxo-export>
+          <dxo-paging [pageSize]="10"></dxo-paging>
+          <dxo-pager 
+              [showPageSizeSelector]="true"
+              [allowedPageSizes]="[5, 10, 20]"
+              [showInfo]="true">
+          </dxo-pager>
+          
+          <dxi-column dataField="orderid" caption="Order Id"></dxi-column>
+          <dxi-column dataField="quantity" caption="Total Quantity"></dxi-column>
+          <dxi-column dataField="productamount" caption="Total Bill (INR)"></dxi-column>
+
+
+          <div *dxTemplate="let eachOrder of 'detail'" id="productDetails">
+            <h4 class="text-center"> Order Details </h4>
+            <dx-data-grid
+                [dataSource]="orderedProducts"
+                [showBorders]="true"
+                [columnAutoWidth]="true">
+                    <dxi-column dataField="productName" caption="Product"></dxi-column>
+                    <dxi-column dataField="productMrp" caption="MRP (INR)"></dxi-column>
+                    <dxi-column dataField="productDisc" caption="Discount (INR)"></dxi-column>
+                    <dxi-column dataField="productPriceToShow" caption="Price (INR)"></dxi-column>
+            </dx-data-grid>
+        </div>
+      </dx-data-grid>
+  </div>
+</div>     
+
+<dx-load-panel #loadPanel 
+               shadingColor="lightcyan" 
+               [position]="{ of: '#smMyOrdersContainer' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>
+
+<dx-load-panel #pdLoadPanel 
+               shadingColor="lightcyan" 
+               [position]="{ of: '#productDetails' }" 
+               [(visible)]="pdLoadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>

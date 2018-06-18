@@ -1,3 +1,4 @@
+import { CommonUtilityService } from './common-utility.service';
 import { DataStorageService } from './data-storage.service';
 import { Component } from '@angular/core';
 import    { DxFormModule, DxTileViewModule } from 'devextreme-angular';
@@ -5,7 +6,7 @@ import    { DxFormModule, DxTileViewModule } from 'devextreme-angular';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers:[DataStorageService]
+  providers:[DataStorageService,CommonUtilityService]
 })
 export class AppComponent {
   

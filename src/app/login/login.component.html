@@ -1,8 +1,8 @@
 <div class="row" id="smloginRegisterContainer">
     <div class="col-md-6 p-5 sm-register">
         
-        <div id="smRegistrationContainer" [ngSwitch]="registrationConfirm">
-            <div *ngSwitchCase="false">
+        <div id="smRegistrationContainer">
+            <div>
                 <h1 class="font-weight-bold text-center pb-4">
                     new user ?
                 </h1>
@@ -82,40 +82,7 @@
                     </dx-form>
                 </form>
             </div>
-            <div class="smRegisterConfirmContainer" *ngSwitchCase="true">
-                <h1 class="font-weight-bold text-center pb-4">
-                    Confirm Sign Up
-                </h1>
-                <form (submit)="onRegistrationConfirmationFormSubmit($event)">
-                    <dx-form id="form" 
-                                #registrationConfirmationForm
-                                labelLocation="left" 
-                                [minColWidth]=300 
-                                [colCount]=1 
-                                [showColonAfterLabel]=false>
-                        <dxi-item dataField="userName" [editorOptions]="confirmRegisterUserNameOptions" editorType="dxTextBox" [disabled]=true>
-                            <dxo-label text="User Name">
-                            </dxo-label>
-                            <dxi-validation-rule type="required" message="User Name is required">
-                            </dxi-validation-rule>
-                            <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
-                            </dxi-validation-rule>
-                            <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
-                            </dxi-validation-rule>
-                        </dxi-item>        
-                        <dxi-item dataField="accessCode" editorType="dxNumberBox">
-                            <dxo-label text="Confirmation Code">
-                            </dxo-label>
-                            <dxi-validation-rule type="required" message="Confirmation Code is required">
-                            </dxi-validation-rule>
-                            <dxi-validation-rule type="stringLength" [min]="6" [max]="6" message="Confirmation Code must have at 6 digits">     
-                            </dxi-validation-rule>
-                        </dxi-item>
-                        <dxi-item itemType="button" alignment="center" [buttonOptions]="registerConfirmButtonOptions">
-                        </dxi-item>
-                   </dx-form>
-                </form>        
-            </div>
+            
         </div>
         
        
@@ -149,8 +116,13 @@
                     <dxi-validation-rule type="required" message="Password is required">
                     </dxi-validation-rule>        
                 </dxi-item>
-                <dxi-item itemType="button" alignment="center" [buttonOptions]="loginButtonOptions">
-                </dxi-item>
+                      
+                <dxi-item  itemType="button" alignment="center" [buttonOptions]="loginButtonOptions" >
+                    </dxi-item>
+                  
+                    <dxi-item class="text-center">
+                            <a class="smForgotPasswordLink btn btn-link" routerLink="/Reset">Forgot Password </a>
+                        </dxi-item>    
             </dx-form>
         </form>
     </div>
@@ -165,3 +137,47 @@
                [shading]="true" 
                [closeOnOutsideClick]="false">
 </dx-load-panel>
+
+
+<dx-popup
+        class="popup"
+        [width]="400"
+        [height]="250"
+        [showTitle]="true"
+        title="Confirm Sign Up"
+        [dragEnabled]="false"
+        [closeOnOutsideClick]="false"
+        [(visible)]="registrationConfirm">
+        <div *dxTemplate="let data of 'content'">
+            <form (submit)="onRegistrationConfirmationFormSubmit($event)">
+                <dx-form id="form" 
+                            #registrationConfirmationForm
+                            labelLocation="left" 
+                            [minColWidth]=300 
+                            [colCount]=1 
+                            [showColonAfterLabel]=false
+                        >
+                    <dxi-item dataField="userName" editorType="dxTextBox">
+                        <dxo-label text="User Name">
+                        </dxo-label>
+                        <dxi-validation-rule type="required" message="User Name is required">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule type="pattern" [pattern]="namePattern" message="Please enter valid First Name">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule type="stringLength" [min]="3" message="First Name must have at least 3 symbols">     
+                        </dxi-validation-rule>
+                    </dxi-item>        
+                    <dxi-item dataField="accessCode">
+                        <dxo-label text="Confirmation Code">
+                        </dxo-label>
+                        <dxi-validation-rule type="required" message="Confirmation Code is required">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule type="stringLength" [min]="6" [max]="6" message="Confirmation Code must have at 6 digits">     
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item itemType="button" alignment="center" [buttonOptions]="registerConfirmButtonOptions">
+                    </dxi-item>
+               </dx-form>
+            </form>        
+        </div>
+    </dx-popup>

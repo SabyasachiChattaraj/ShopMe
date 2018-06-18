@@ -1,6 +1,6 @@
 import { DataStorageService } from './../data-storage.service';
 import { CartService } from './../cart.service';
-
+import { DxSelectBoxModule } from 'devextreme-angular';
 import { User, FetchAllCartByUserRequest, FetchAllCartByUserResponse, UserAttribute } from './../common-model';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Routes, ActivatedRoute,Router } from '@angular/router';
@@ -16,7 +16,12 @@ export class HeaderComponentComponent implements OnInit {
   loggedInUserName:string=null;
   loggedInUser:User=null;
   loggedInUserInitials:string=null;
-  cartLink:string="/Login";
+  userMenu:any[]=[
+      "My Profile",
+       
+      "My Orders"
+    
+  ];
   constructor(private _cartService:CartService,private _router:Router,private _dataStorageService:DataStorageService) { 
     
   }
@@ -38,7 +43,7 @@ export class HeaderComponentComponent implements OnInit {
         if(this.loggedInUser["family_name"]!=null){
           this.loggedInUserInitials=this.loggedInUserInitials+this.loggedInUser.family_name.substr(0,1).toUpperCase();
         }
-        this.cartLink="/Cart";
+      
         isLoggedIn=true;
       }  
     }

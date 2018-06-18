@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserLoginRequest, UserRegistrationRequest, UserLoginResponse, User, UserRegistrationResponse, UserRegistrationConfirmationRequest, UserRegistrationConfirmationResponse } from './../common-model';
 import { LoginService } from './../login.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxFormModule, DxFormComponent, DxNumberBoxComponent } from 'devextreme-angular';
+import { DxFormModule, DxFormComponent, DxNumberBoxComponent,DxBoxModule, DxPopupModule } from 'devextreme-angular';
 import { Router } from '@angular/router';
 import notify from 'devextreme/ui/notify';
 
@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
   
   loadingVisible:boolean=false;
   registrationConfirm:boolean=false;
+  provisionalUserName:string="";
+
   constructor(private _loginService:LoginService,private _router: Router) {
     this.maxDate = new Date(this.maxDate.setFullYear(this.maxDate.getFullYear() - 18));
    }
@@ -48,13 +50,16 @@ export class LoginComponent implements OnInit {
     width:200
   };
 
+  forgotPasswordButtonOptions:any={
+    text: "Forgot Password",
+    type: "default",
+    useSubmitBehavior: false,
+    width:200
+  }
+
   termsCheckboxOptions:any={ 
     text: 'I agree to the Terms and Conditions',
     value: false
-  };
-
-  confirmRegisterUserNameOptions:any={
-    value:"GPAUL"
   };
 
   passwordBoxOptions:any={ mode: 'password' };
@@ -104,20 +109,20 @@ export class LoginComponent implements OnInit {
     let userRegistrationRequest:UserRegistrationRequest=this.registrationForm.instance.option("formData");
     this.showLoader();
     userRegistrationRequest.dob= this.convertDate(userRegistrationRequest.dob);
+    
     this._loginService.registerUser(userRegistrationRequest)
         .subscribe(
           (userRegistrationResponse:UserRegistrationResponse) => {
-            if(userRegistrationResponse.signUpResult.sdkHttpMetadata){
+            if(userRegistrationResponse.signUpResult && userRegistrationResponse.signUpResult.sdkHttpMetadata){
               if(userRegistrationResponse.signUpResult.sdkHttpMetadata.httpStatusCode==200){
                 this.registrationForm.instance.resetValues();
                 this.registrationConfirm=true;
-                this.confirmRegisterUserNameOptions.value=userRegistrationRequest.firstName+userRegistrationRequest.lastName;
                 notify("Please enter confirmation code received via email.", "success", 800);
               }else{
-                notify("Registration error ", "error", 800);
+                notify("Registration error "+userRegistrationResponse.errorMessage, "error", 800);
               }
             }else{
-              notify("Registration error ", "error", 800);
+              notify("Registration error "+userRegistrationResponse.errorMessage, "error", 800);
             }
             
           },
@@ -138,17 +143,17 @@ export class LoginComponent implements OnInit {
     this._loginService.confirmRegistration(userRegistrationConfirmationRequest)
         .subscribe(
           (userRegistrationConfirmationResponse:UserRegistrationConfirmationResponse) => {
-            if(userRegistrationConfirmationResponse.confirmSignUpResult.sdkHttpMetadata){
+            if(userRegistrationConfirmationResponse.confirmSignUpResult && userRegistrationConfirmationResponse.confirmSignUpResult.sdkHttpMetadata){
               if(userRegistrationConfirmationResponse.confirmSignUpResult.sdkHttpMetadata.httpStatusCode==200){
                 this.registrationConfirmationForm.instance.resetValues();
                 this.registrationForm.instance.resetValues();
                 this.registrationConfirm=false;
-                notify("Successfully registered. Please Login.", "success", 800);
+                notify("Successfully registered. Please Login using User Name : "+userRegistrationConfirmationRequest.userName, "success", 800);
               }else{
-                notify("Registration Confirm error ", "error", 800);
+                notify("Registration Confirm error "+userRegistrationConfirmationResponse.errorMessage, "error", 800);
               }
             }else{
-              notify("Registration Confirm error ", "error", 800);
+              notify("Registration Confirm error "+userRegistrationConfirmationResponse.errorMessage, "error", 800);
             }
             
           },
@@ -178,5 +183,10 @@ export class LoginComponent implements OnInit {
       if (month.length < 2) month = '0' + month;
       if (day.length < 2) day = '0' + day;
       return [day,month,year].join('/');
+  }
+
+  goToResetPage(e):void{
+    e.preventDefault();
+    this._router.navigate(['/Reset']); 
   }
 }

@@ -1,4 +1,4 @@
-import { UserLoginRequest, UserLoginResponse, UserRegistrationRequest, UserRegistrationResponse, User, UserRegistrationConfirmationRequest, UserRegistrationConfirmationResponse } from './common-model';
+import { UserLoginRequest, UserLoginResponse, UserRegistrationRequest, UserRegistrationResponse, User, UserRegistrationConfirmationRequest, UserRegistrationConfirmationResponse, ForgotPasswordRequest, ForgotPasswordResponse, ResetPasswordRequest, ResetPasswordResponse } from './common-model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -25,4 +25,13 @@ export class LoginService {
     return this._http.post<UserRegistrationConfirmationResponse>(this.USER_MGMT_URL,JSON.stringify(userRegistrationConfirmationRequest));
   }
 
+  forgotPassword(forgotPasswordRequest:ForgotPasswordRequest): Observable<ForgotPasswordResponse>{
+    forgotPasswordRequest.action="forgot_password";
+    return this._http.post<ForgotPasswordResponse>(this.USER_MGMT_URL,JSON.stringify(forgotPasswordRequest));
+  }
+
+  resetPassword(resetPasswordRequest:ResetPasswordRequest): Observable<ResetPasswordResponse>{
+    resetPasswordRequest.action="reset_password";
+    return this._http.post<ResetPasswordResponse>(this.USER_MGMT_URL,JSON.stringify(resetPasswordRequest));
+  }
 }

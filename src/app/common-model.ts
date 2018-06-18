@@ -149,6 +149,41 @@ export interface UserRegistrationConfirmationResponse {
     confirmSignUpResult: ConfirmSignUpResult;
 }
 
+/* Forgot Password */
+
+export class ForgotPasswordRequest {
+    userName: string;
+    action: string;
+    constructor(userName:string){
+        this.userName=userName;
+    }
+}
+
+export interface ForgotPasswordResponse {
+    statusCode: number;
+    errorMessage: string;
+    forgotPasswordResult: SignUpResult;
+}
+
+export class ResetPasswordRequest {
+    userName: string;
+    newPassword: string;
+    accessCode: string;
+    action: string;
+    constructor(userName:string,newPassword:string,accessCode:string){
+        this.userName=userName;
+        this.newPassword=newPassword;
+        this.accessCode=accessCode;
+    }
+}
+
+export interface ResetPasswordResponse {
+    statusCode: number;
+    errorMessage: string;
+    confirmForgotPasswordResult: ConfirmSignUpResult;
+}
+
+
 /* Products */
 
 export interface IProduct {
@@ -271,4 +306,18 @@ export interface PlaceOrderResponse {
     code: string;
     message: string;
     data: PlaceOrderData;
+}
+
+export class ViewOrderRequest {
+    userid: string;
+    operationName:string;
+    constructor(userid: string){
+        this.userid=userid;
+    }
+}
+
+export interface ViewOrderResponse {
+    code: string;
+    message: string;
+    data: PlaceOrderData[];
 }
