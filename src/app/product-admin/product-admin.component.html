@@ -1,39 +1,96 @@
 <div class="card sm-addproduct-container">
+   <div class="card-header"> 
+      Product Administation
+   </div>
+   <div class="card-body">
+      <div id="data-grid-demo">
+          <dx-data-grid 
+              id="gridContainer"
+              [dataSource]="productsMaster"
+              keyExpr="productId">
+              
+              <dxo-export [enabled]="true" fileName="ProductsMasterList" [allowExportSelectedData]="false"></dxo-export>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager 
+                  [showPageSizeSelector]="true"
+                  [allowedPageSizes]="[5, 10, 20]"
+                  [showInfo]="true">
+              </dxo-pager>
+              <dxo-editing 
+                  mode="popup"
+                  [allowUpdating]="true"
+                  [allowDeleting]="true"
+                    [allowAdding]="true"
+                    [useIcons]="true">
+                 
+                    <dxo-form>
+                        <dxi-item dataField="productId"></dxi-item>
+                        <dxi-item dataField="productName"></dxi-item>
+                        <dxi-item dataField="productCategory" editorType="dxSelectBox" [editorOptions]="{ items: ['Shirt','Skirt','Shoes','Watches','Bags'], value: '' }">
+                        
+                        </dxi-item>
+
+                        <dxi-item dataField="productMrp" editorType="dxNumberBox"></dxi-item>
+                        <dxi-item dataField="discount" editorType="dxNumberBox"></dxi-item>
+                        <dxi-item dataField="priceToDisplay" editorType="dxNumberBox"></dxi-item>
+                        <dxi-item dataField="quantity" editorType="dxNumberBox" [editorOptions]="quantityEditorOptions"></dxi-item>
 
 
+                        <dxi-item dataField="manufacturedBy" editorType="dxTextBox"></dxi-item>
 
-  <dx-form  labelLocation="left" [minColWidth]=300 [colCount]=1 [showColonAfterLabel]=false>
+                        <dxi-item dataField="productImage">
+                        <dx-file-uploader
+                            selectButtonText="Select photo"
+                            labelText=""
+                            accept="image/*"
+                            uploadMode="useForm">
+                        </dx-file-uploader>
+                        </dxi-item>  
+                    </dxo-form>
+                 
+                    <dxo-popup
+                      title="Edit Product"
+                      [showTitle]="true"
+                      [width]="750"
+                      [height]="450"
+                      
+                      >
+                      
+                  </dxo-popup>
+              </dxo-editing>
+              
+              <dxi-column dataField="productId" caption="Id"></dxi-column>
+              <dxi-column dataField="productName" caption="Name"></dxi-column>
+              <dxi-column dataField="productCategory" caption="Category"></dxi-column>
+              <dxi-column dataField="productMrp" caption="MRP (INR)"></dxi-column>
+              <dxi-column dataField="productDisc" caption="Discount (INR)"></dxi-column>
+              <dxi-column dataField="productPriceToShow" caption="Price (INR)"></dxi-column>
+              <dxi-column dataField="productImagePath" 
+                          caption="Image" 
+                          [allowFiltering]="false"
+                          [allowSorting]="false" 
+                          cellTemplate="productImageCellTemplate">
+              </dxi-column>
 
+              <dxi-column dataField="quantity" caption="Quantitiy"></dxi-column>
+              <dxi-column dataField="manufacturedBy" caption="Manufactured By"></dxi-column>
+              
+              <div *dxTemplate="let data of 'productImageCellTemplate'">
+                    <img [src]="data.value" [width]="50" [height]="30"/>
+              </div>
+          </dx-data-grid>
+      </div>
+   </div>
 
-      <dxi-item dataField="productId"></dxi-item>
-      <dxi-item dataField="productName"></dxi-item>
-      <dxi-item dataField="productCategory" editorType="dxSelectBox" [editorOptions]="{ items: ['Shirt','Skirt','Shoes','Watches','Bags'], value: '' }">
-        
-      </dxi-item>
   
-      <dxi-item dataField="productMrp" editorType="dxNumberBox"></dxi-item>
-      <dxi-item dataField="discount" editorType="dxNumberBox"></dxi-item>
-      <dxi-item dataField="priceToDisplay" editorType="dxNumberBox"></dxi-item>
-      <dxi-item dataField="quantity" editorType="dxNumberBox" [editorOptions]="quantityEditorOptions"></dxi-item>
-  
-  
-      <dxi-item dataField="manufacturedBy" editorType="dxTextBox"></dxi-item>
-  
-      <dxi-item dataField="productImage">
-      <dx-file-uploader
-            selectButtonText="Select photo"
-            labelText=""
-            accept="image/*"
-            uploadMode="useForm">
-        </dx-file-uploader>
-      </dxi-item>  
-
-      <dxi-item 
-      itemType="button"
-      alignment="center"
-      [buttonOptions]="addProductButtonOptions">
-      </dxi-item>
-
-
-  </dx-form>
 </div>
+
+<dx-load-panel #loadPanel 
+               shadingColor="lightcyan" 
+               [position]="{ of: '.sm-addproduct-container' }" 
+               [(visible)]="loadingVisible"
+               [showIndicator]="true" 
+               [showPane]="true" 
+               [shading]="true" 
+               [closeOnOutsideClick]="false">
+</dx-load-panel>

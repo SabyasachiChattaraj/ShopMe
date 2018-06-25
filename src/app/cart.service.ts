@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { AddToCartRequest, AddToCartResponse, FetchAllCartByUserRequest, FetchAllCartByUserResponse, DeleteCartByUserProductRequest, CartQuantityUpdateRequest, CartQuantityUpdateResponse } from './common-model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -6,7 +7,7 @@ import 'rxjs/add/operator/do';
 import { HttpClientModule, HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class CartService {
-  private readonly CART_MGMT_URL="https://6dbcowjcz8.execute-api.ap-south-1.amazonaws.com/prod/cart";
+  private readonly CART_MGMT_URL=environment.CART_MGMT_URL;
   
   constructor(private _http:HttpClient) { }
 

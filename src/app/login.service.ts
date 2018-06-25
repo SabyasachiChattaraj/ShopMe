@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { HttpClientModule, HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { environment } from '../environments/environment';
 @Injectable()
 export class LoginService {
-  private readonly USER_MGMT_URL="https://j8et8no04b.execute-api.us-west-2.amazonaws.com/prod/usermanagement";
+  private readonly USER_MGMT_URL=environment.USER_MGMT_URL;
  
   constructor(private _http: HttpClient){}
 

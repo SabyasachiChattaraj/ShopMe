@@ -33,7 +33,7 @@ const appRoutes: Routes = [
     component: LoginComponent 
   },
   { 
-    path: 'Admin', 
+    path: 'ProductAdmin', 
     component: ProductAdminComponent, 
     canActivate:[AuthGuardService]
   },
